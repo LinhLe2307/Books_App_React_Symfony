@@ -2,17 +2,21 @@ import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import {
     BrowserRouter as BrowserRouter,
-    Router,
     Routes,
     Route,
+    Navigate
 } from "react-router-dom";
+
 import Layout from "./pages/Layout";
 import HomePage from "./components/HomePage";
 import Checkout from "./components/Checkout";
 import BookDetails from "./components/BookDetails";
+import SearchPage from "./components/SearchPage";
 
 function Main() {
-
+    const NoMatch = () => {
+        return <h2>No path matches</h2>
+    }
     return (
         <BrowserRouter>
             <Routes>
@@ -21,11 +25,16 @@ function Main() {
                         index
                         element={<HomePage />}
                     />
+                    <Route path="/search/:keyword" element={<SearchPage />} />
+                    <Route path="/search/:keyword/:id/:tile" element={<BookDetails />} />
                     <Route path="/checkout" element={<Checkout />} />
-                    <Route path="/:id" element={<BookDetails />} />
+
+                    {/* Handle non-existing path */}
+                    <Route path="/404" element={<NoMatch />} />
+                    <Route path='/*' element={<Navigate to="/404" />} />
                 </Route>
             </Routes>
-        </BrowserRouter>
+        </BrowserRouter >
     );
 }
 
