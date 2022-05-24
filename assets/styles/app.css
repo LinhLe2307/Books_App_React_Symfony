@@ -9,9 +9,20 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
-a {
+
+li {
     list-style: none;
+}
+
+
+a {
     text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline !important;
+    cursor: pointer;
+    color: blue !important;
 }
 
 label {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 
-const BookCard = ({ volumeInfo, handleAuthor, handleAdd }) => {
+const BookCard = ({ id, volumeInfo, handleAuthor, handleAdd }) => {
     const bookTitle = volumeInfo?.title;
     const bookImage = volumeInfo.imageLinks?.thumbnail;
     const bookAuthors = volumeInfo.authors;
@@ -20,14 +20,14 @@ const BookCard = ({ volumeInfo, handleAuthor, handleAdd }) => {
                 className="card-img-top" />
 
             <div className='card-body'>
-                <h5 className='card-title'>{bookTitle}</h5>
+                <Link to={`${id}`}><h5 className='card-title'>{bookTitle}</h5></Link>
                 <ul>
                     {bookAuthors?.map(author => (
-                        <li onClick={() => authorsConverter(author)} key={author}>{author}</li>
+                        <li onClick={() => authorsConverter(author)} key={author}><a>{author}</a></li>
                     ))}
                 </ul>
             </div>
-            {/* We return the whole book Object in case we use other later */}
+            
             <button onClick={() => handleAdd()}>Add to Cart</button>
         </div>
     )

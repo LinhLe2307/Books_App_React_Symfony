@@ -26,7 +26,8 @@ const Home = () => {
 
     // Input from users
     const handleChange = (e) => {
-        setInputField(e.target.value)
+        //in case someone has put spaces in the input
+        setInputField(e.target.value.trim())
     }
 
     // Clicking to the names of authors. Default volume is 10 but we can get the maximum allowable results up to 40

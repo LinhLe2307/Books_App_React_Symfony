@@ -9,6 +9,7 @@ import {
 import Layout from "./pages/Layout";
 import HomePage from "./components/HomePage";
 import Checkout from "./components/Checkout";
+import BookDetails from "./components/BookDetails";
 
 function Main() {
 
@@ -21,6 +22,7 @@ function Main() {
                         element={<HomePage />}
                     />
                     <Route path="/checkout" element={<Checkout />} />
+                    <Route path="/:id" element={<BookDetails />} />
                 </Route>
             </Routes>
         </BrowserRouter>
