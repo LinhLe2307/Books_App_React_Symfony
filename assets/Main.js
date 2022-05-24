@@ -25,8 +25,14 @@ function Main() {
                         index
                         element={<HomePage />}
                     />
+
+                    {/* This is when searching keyword */}
                     <Route path="/search/:keyword" element={<SearchPage />} />
                     <Route path="/search/:keyword/:id/:tile" element={<BookDetails />} />
+
+                    {/* This is when clicking authors */}
+                    <Route exact path="/search/author/:name" element={<SearchPage />} />
+                    <Route exact path="/search/author/:name/:id/:tile" element={<BookDetails />} />
                     <Route path="/checkout" element={<Checkout />} />
 
                     {/* Handle non-existing path */}

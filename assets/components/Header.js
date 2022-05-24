@@ -7,8 +7,10 @@ const Header = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
   };
+  
   // Input from users
   const handleChange = (e) => {
+
     //in case someone has put spaces in the input and format it to look nicer in the URL
     const inputFormat = e.target.value.trim().replaceAll(" ", "+");
     setInputField(inputFormat);

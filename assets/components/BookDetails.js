@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from 'axios';
 
 const BookDetails = () => {
@@ -32,7 +32,10 @@ const BookDetails = () => {
         <div>
             <img src={bookInfo.imageLinks?.thumbnail} />
             <h1>{bookInfo.title}</h1>
-            <h2>{bookInfo.authors?.map(author => `${author} `)}
+            <h2>{bookInfo.authors?.map(author => {
+                const authorQuery = author.replaceAll(' ', '+');
+                return <Link key={author} to={`/search/author/${authorQuery}`}>{author}</Link>
+            })}
             </h2>
             <p>{bookInfo.description}</p>
         </div>
