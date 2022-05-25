@@ -4,9 +4,9 @@ import axios from "axios";
 import BookCard from "./BookCard";
 
 const SearchPage = () => {
-  //Since users' input matches the keyword in URL, we can use it as query to get the data
-  const keyword = useParams().keyword;
-  const authorName = useParams().name;
+  
+  const keyword = useParams().keyword; //Since users' input matches the keyword in URL, we can use it after q= to get the data
+  const authorName = useParams().name; //Since author's name matches the keyword in URL, we can use it after q= to get the data
   const [books, setBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -46,12 +46,12 @@ const SearchPage = () => {
   };
 
   useEffect(() => {
-    // conditional rendering the keyword (users' inputs) whenever it's changed. Otherwise, it will render everytime the author link is click => double rendering
+    // keyword will be undefined whenever the url changes to search the authorName. It will still render even undefined everytime the author's name is click => double rendering
     keyword ? fetchBooks() : "";
   }, [keyword]);
 
   useEffect(() => {
-    // conditional rendering the author whenever it's changed. Otherwise, it will render everytime the input is changed => double rendering
+    // authorName will be undefined whenever the url changes to search the keyword (users' inputs). It will still render even undefined everytime the keyword is provided => double rendering
     authorName ? handleAuthor() : "";
   }, [authorName]);
 

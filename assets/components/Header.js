@@ -11,7 +11,7 @@ const Header = () => {
   // Input from users
   const handleChange = (e) => {
 
-    //in case someone has put spaces in the input and format it to look nicer in the URL
+    //in case someone has put spaces in the input and format it to look nicer in the URL using +
     const inputFormat = e.target.value.trim().replaceAll(" ", "+");
     setInputField(inputFormat);
   }

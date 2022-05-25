@@ -26,7 +26,7 @@ function Main() {
                         element={<HomePage />}
                     />
 
-                    {/* This is when searching keyword */}
+                    {/* This is when searching keyword (users' inputs) */}
                     <Route path="/search/:keyword" element={<SearchPage />} />
                     <Route path="/search/:keyword/:id/:tile" element={<BookDetails />} />
 
@@ -35,7 +35,7 @@ function Main() {
                     <Route exact path="/search/author/:name/:id/:tile" element={<BookDetails />} />
                     <Route path="/checkout" element={<Checkout />} />
 
-                    {/* Handle non-existing path */}
+                    {/* Handle non-existing path, will redirect to /404 */}
                     <Route path="/404" element={<NoMatch />} />
                     <Route path='/*' element={<Navigate to="/404" />} />
                 </Route>

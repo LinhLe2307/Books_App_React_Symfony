@@ -32,7 +32,7 @@ const BookDetails = () => {
         <div>
             <img src={bookInfo.imageLinks?.thumbnail} />
             <h1>{bookInfo.title}</h1>
-            <h2>{bookInfo.authors?.map(author => {
+            <h2>Author: {bookInfo.authors?.map(author => {
                 const authorQuery = author.replaceAll(' ', '+');
                 return <Link key={author} to={`/search/author/${authorQuery}`}>{author}</Link>
             })}

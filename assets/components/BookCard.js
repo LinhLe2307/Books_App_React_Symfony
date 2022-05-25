@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 
-const BookCard = ({ id, volumeInfo,  handleAdd }) => {
+const BookCard = ({ id, volumeInfo, handleAdd }) => {
     const bookTitle = volumeInfo.title;
     const bookImage = volumeInfo.imageLinks?.thumbnail || volumeInfo.imageLinks?.smallThumbnail;
     const bookAuthors = volumeInfo.authors;
     const publishedDate = volumeInfo.publishedDate;
 
-    // This is for making replacing all the spaces in URL with - for readability.
+    // Replacing all the spaces in URL with - for readability. Since the book title is for displaying only, we can use "-", if we use it for search, should use "+" 
     const titleFormat = bookTitle.replaceAll(" ", "-")
 
     return (
