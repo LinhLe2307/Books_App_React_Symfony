@@ -4,11 +4,13 @@ import axios from "axios";
 import BookCard from "./BookCard";
 
 const SearchPage = () => {
-  
+
   const keyword = useParams().keyword; //Since users' input matches the keyword in URL, we can use it after q= to get the data
   const authorName = useParams().name; //Since author's name matches the keyword in URL, we can use it after q= to get the data
   const [books, setBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [sort, setSort] = useState("");
+  const [dateSorted, setDateSorted] = useState([]);
 
   // fetch books from Google API based on users' inputs. Default volume is 10 but we can get the maximum allowable results up to 40
   const fetchBooks = () => {
@@ -18,7 +20,8 @@ const SearchPage = () => {
         `https://www.googleapis.com/books/v1/volumes?q=${keyword}&maxResults=40`
       )
       .then((res) => {
-        setBooks(res.data.items);
+        const data = handleAvailableData(res);
+        setBooks(data);
         setIsLoading(false);
       })
       .catch((error) => console.log(error));
@@ -34,7 +37,8 @@ const SearchPage = () => {
         `https://www.googleapis.com/books/v1/volumes?q=inauthor:"${authorName}"&maxResults=40`
       )
       .then((res) => {
-        setBooks(res.data.items);
+        const data = handleAvailableData(res);
+        setBooks(data);
         setIsLoading(false);
       })
       .catch((error) => console.log(error));
@@ -45,13 +49,36 @@ const SearchPage = () => {
     // need API to add
   };
 
+  const handleSort = (e) => {
+    console.log(e.target.value);
+    setSort(e.target.value);
+  }
+
+  const handleAvailableData = (res) => {
+    // If there are no date, images or title, make default value
+    const availableData = res.data.items.map(book => {
+      if (book.volumeInfo.hasOwnProperty('publishedDate') === false) {
+        book.volumeInfo.publishedDate = "0000";
+      }
+      if (book.volumeInfo.hasOwnProperty('imageLinks') === false) {
+        book.volumeInfo.imageLinks = { thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRd-y-IJN8glQlf1qoU01dEgGPUa0d1-sjfWg&usqp=CAU" }
+      }
+      if (book.volumeInfo.hasOwnProperty('title') === false) {
+        book.volumeInfo.title = "No Title";
+      }
+      return book;
+    });
+    return availableData;
+
+  }
+
+
   useEffect(() => {
     // keyword will be undefined whenever the url changes to search the authorName. It will still render even undefined everytime the author's name is click => double rendering
     keyword ? fetchBooks() : "";
   }, [keyword]);
 
   useEffect(() => {
-    // authorName will be undefined whenever the url changes to search the keyword (users' inputs). It will still render even undefined everytime the keyword is provided => double rendering
     authorName ? handleAuthor() : "";
   }, [authorName]);
 
@@ -60,16 +87,19 @@ const SearchPage = () => {
   }
 
   return (
-    <div className="row align-items-center">
-      {books.map((book) => {
-        // Check whether or not there are images or title
-        const checkImage = book.volumeInfo.imageLinks;
-        const checkTitle = book.volumeInfo.title;
-        if (checkImage && checkTitle) {
+    <>
+      <select defaultValue={sort} onClick={handleSort} >
+        <option value="sort" disabled>Sort</option>
+        <option value="newest">Newest</option>
+        <option value="oldest">Oldest</option>
+      </select>
+
+      <div className="row align-items-center">
+        {books.map((book) => {
           return <BookCard key={book.id} {...book} />;
-        }
-      })}
-    </div>
+        })}
+      </div>
+    </>
   );
 };
 
