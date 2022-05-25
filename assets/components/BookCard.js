@@ -22,12 +22,15 @@ const BookCard = ({ id, volumeInfo, handleAdd }) => {
                 {/* Send the book id and title to BookDetails as :id/:title to display it in URL and retrieve id by useParams().id to fetch data*/}
                 <Link to={`${id}/${titleFormat}`}><h5 className='card-title'>{bookTitle}</h5></Link>
                 <ul>
-                    {bookAuthors?.map(author => {
-                        const authorQuery = author.replaceAll(' ', '+');
-                        return <li key={author}><Link to={`/search/author/${authorQuery}`}>{author}</Link></li>
-                    })}
+                    {/* Link cannot be click when it's Unknown Authors  */}
+                    {bookAuthors === "Unknown Authors"
+                        ? <li>Unknown Authors</li>
+                        : bookAuthors?.map(author => {
+                            const authorQuery = author.replaceAll(' ', '+');
+                            return <li key={author}><Link to={`/search/author/${authorQuery}`}>{author}</Link></li>
+                        })}
                 </ul>
-                <p>{publishedDate}</p>
+                <p>Date: {publishedDate}</p>
             </div>
 
             <button onClick={() => handleAdd()}>Add to Cart</button>

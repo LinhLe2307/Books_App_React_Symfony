@@ -4,13 +4,11 @@ import axios from "axios";
 import BookCard from "./BookCard";
 
 const SearchPage = () => {
-
   const keyword = useParams().keyword; //Since users' input matches the keyword in URL, we can use it after q= to get the data
   const authorName = useParams().name; //Since author's name matches the keyword in URL, we can use it after q= to get the data
   const [books, setBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [sort, setSort] = useState("");
-  const [dateSorted, setDateSorted] = useState([]);
 
   // fetch books from Google API based on users' inputs. Default volume is 10 but we can get the maximum allowable results up to 40
   const fetchBooks = () => {
@@ -49,29 +47,63 @@ const SearchPage = () => {
     // need API to add
   };
 
-  const handleSort = (e) => {
-    console.log(e.target.value);
-    setSort(e.target.value);
-  }
-
   const handleAvailableData = (res) => {
     // If there are no date, images or title, make default value
-    const availableData = res.data.items.map(book => {
-      if (book.volumeInfo.hasOwnProperty('publishedDate') === false) {
+    const availableData = res.data.items.map((book) => {
+      if (book.volumeInfo.hasOwnProperty("publishedDate") === false) {
         book.volumeInfo.publishedDate = "0000";
       }
-      if (book.volumeInfo.hasOwnProperty('imageLinks') === false) {
-        book.volumeInfo.imageLinks = { thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRd-y-IJN8glQlf1qoU01dEgGPUa0d1-sjfWg&usqp=CAU" }
+      if (book.volumeInfo.hasOwnProperty("imageLinks") === false) {
+        book.volumeInfo.imageLinks = {
+          thumbnail:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRd-y-IJN8glQlf1qoU01dEgGPUa0d1-sjfWg&usqp=CAU",
+        };
       }
-      if (book.volumeInfo.hasOwnProperty('title') === false) {
+      if (book.volumeInfo.hasOwnProperty("title") === false) {
         book.volumeInfo.title = "No Title";
+      }
+
+      if (book.volumeInfo.hasOwnProperty("authors") === false) {
+        book.volumeInfo.authors = "Unknown Authors";
       }
       return book;
     });
     return availableData;
+  };
 
-  }
+  // This is for comparing years, months and dates between books
+  const sortedDate = books.sort((a, b) => {
+    // split the publishedDate to year, month, date and sort based on year, then month, then date
+    const [aYear, aMonth, aDate] = a.volumeInfo.publishedDate.split("-");
+    const [bYear, bMonth, bDate] = b.volumeInfo.publishedDate.split("-");
 
+    if (sort === "newest") {
+      if (parseInt(aYear) === parseInt(bYear)) {
+        if (parseInt(aMonth) === parseInt(bMonth)) {
+          if (parseInt(aDate) < parseInt(bDate)) return -1;
+          if (parseInt(aDate) > parseInt(bDate)) return 1;
+          return 0; // when year, month, date is the same, do nothing
+        } else if (parseInt(aMonth) > parseInt(bMonth)) return -1;
+        else return 1;
+      } else if (parseInt(aYear) > parseInt(bYear)) return -1;
+      else return 1;
+    } else if (sort === "oldest") {
+      if (parseInt(bYear) === parseInt(aYear)) {
+        if (parseInt(bMonth) === parseInt(aMonth)) {
+          if (parseInt(bDate) < parseInt(aDate)) return -1;
+          if (parseInt(bDate) > parseInt(aDate)) return 1;
+          return 0;
+        } else if (parseInt(bMonth) > parseInt(aMonth)) return -1;
+        else return 1;
+      } else if (parseInt(bYear) > parseInt(aYear)) return -1;
+      else return 1;
+    }
+  });
+
+  // handle sorting chosen
+  const handleSort = (e) => {
+    setSort(e.target.value);
+  };
 
   useEffect(() => {
     // keyword will be undefined whenever the url changes to search the authorName. It will still render even undefined everytime the author's name is click => double rendering
@@ -88,14 +120,19 @@ const SearchPage = () => {
 
   return (
     <>
-      <select defaultValue={sort} onClick={handleSort} >
-        <option value="sort" disabled>Sort</option>
-        <option value="newest">Newest</option>
+      <select defaultValue={sort} onChange={handleSort}>
+        {/* <option value="sort" disabled>
+          Sort
+        </option> */}
+        <option value="" invalid="true" hidden>
+          Sort
+        </option>
         <option value="oldest">Oldest</option>
+        <option value="newest">Newest</option>
       </select>
 
       <div className="row align-items-center">
-        {books.map((book) => {
+        {sortedDate.map((book) => {
           return <BookCard key={book.id} {...book} />;
         })}
       </div>

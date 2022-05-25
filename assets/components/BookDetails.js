@@ -1,45 +1,74 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
 
 const BookDetails = () => {
-    // Since book's id matches the id in URL, we can use it as query to get the data
-    const id = (useParams().id);
-    const [bookInfo, setBookInfo] = useState({});
-    const [isLoading, setIsLoading] = useState(false)
+  // Since book's id matches the id in URL, we can use it as query to get the data
+  const id = useParams().id;
+  const [bookInfo, setBookInfo] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
-    const fetchBook = () => {
-        setIsLoading(true);
-        axios
-            .get(`https://www.googleapis.com/books/v1/volumes/${id}`)
-            .then(res => {
-                setBookInfo(res.data.volumeInfo);
-                setIsLoading(false);
-            })
-            .catch(error => console.log(error))
+  const fetchBook = () => {
+    setIsLoading(true);
+    axios
+      .get(`https://www.googleapis.com/books/v1/volumes/${id}`)
+      .then((res) => {
+        const data = handleAvailableData(res.data.volumeInfo);
+        setBookInfo(data);
+        setIsLoading(false);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const handleAvailableData = (res) => {
+    // If there are no date, images or title, make default value
+    if (res.hasOwnProperty("publishedDate") === false) {
+      res.publishedDate = "0000";
+    }
+    if (res.hasOwnProperty("publishedDate") === false) {
+      res.publishedDate = "0000";
+    }
+    if (res.hasOwnProperty("authors") === false) {
+      res.authors = "Unknown Authors";
     }
 
-    // intially run when open the page
-    useEffect(() => {
-        fetchBook();
-    }, [])
-
-    if (isLoading) {
-        return <p>...Loading</p>
+    if (res.hasOwnProperty("title") === false) {
+      res.title = "No Title";
     }
+    return res;
+  };
 
-    return (
-        <div>
-            <img src={bookInfo.imageLinks?.thumbnail} />
-            <h1>{bookInfo.title}</h1>
-            <h2>Author: {bookInfo.authors?.map(author => {
-                const authorQuery = author.replaceAll(' ', '+');
-                return <Link key={author} to={`/search/author/${authorQuery}`}>{author}</Link>
+  // intially run when open the page
+  useEffect(() => {
+    fetchBook();
+  }, []);
+
+  if (isLoading) {
+    return <p>...Loading</p>;
+  }
+
+  return (
+    <div>
+      <img src={bookInfo.imageLinks?.thumbnail} />
+      <h1>{bookInfo.title}</h1>
+      <ul>
+        <h5>Author:</h5>
+        {/* Link cannot be click when it's Unknown Authors  */}
+        {bookInfo.authors === "Unknown Authors"
+          ? "Unknown Authors"
+          : bookInfo.authors?.map((author) => {
+              const authorQuery = author.replaceAll(" ", "+");
+              return (
+                <li key={author}>
+                  <Link to={`/search/author/${authorQuery}`}>{author}</Link>
+                </li>
+              );
             })}
-            </h2>
-            <p>{bookInfo.description}</p>
-        </div>
-    )
-}
+      </ul>
+      <h5>{bookInfo.publishedDate}</h5>
+      <p>{bookInfo.description}</p>
+    </div>
+  );
+};
 
-export default BookDetails
+export default BookDetails;

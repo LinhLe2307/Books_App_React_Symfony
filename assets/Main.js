@@ -38,6 +38,7 @@ function Main() {
                     {/* Handle non-existing path, will redirect to /404 */}
                     <Route path="/404" element={<NoMatch />} />
                     <Route path='/*' element={<Navigate to="/404" />} />
+                    <Route path='/search/author/*' element={<Navigate to="/404" />} />
                 </Route>
             </Routes>
         </BrowserRouter >
