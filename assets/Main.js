@@ -9,7 +9,7 @@ import {
 
 import Layout from "./pages/Layout";
 import HomePage from "./components/HomePage";
-import Checkout from "./components/Checkout";
+import ShoppingCart from "./components/ShoppingCart";
 import BookDetails from "./components/BookDetails";
 import SearchPage from "./components/SearchPage";
 
@@ -33,7 +33,7 @@ function Main() {
                     {/* This is when clicking authors */}
                     <Route exact path="/search/author/:name" element={<SearchPage />} />
                     <Route exact path="/search/author/:name/:id/:tile" element={<BookDetails />} />
-                    <Route path="/checkout" element={<Checkout />} />
+                    <Route path="/shopping-cart" element={<ShoppingCart />} />
 
                     {/* Handle non-existing path, will redirect to /404 */}
                     <Route path="/404" element={<NoMatch />} />
