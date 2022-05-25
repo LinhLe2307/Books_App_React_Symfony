@@ -87,6 +87,7 @@ const SearchPage = () => {
         else return 1;
       } else if (parseInt(aYear) > parseInt(bYear)) return -1;
       else return 1;
+      
     } else if (sort === "oldest") {
       if (parseInt(bYear) === parseInt(aYear)) {
         if (parseInt(bMonth) === parseInt(aMonth)) {

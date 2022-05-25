@@ -25,8 +25,11 @@ const BookDetails = () => {
     if (res.hasOwnProperty("publishedDate") === false) {
       res.publishedDate = "0000";
     }
-    if (res.hasOwnProperty("publishedDate") === false) {
-      res.publishedDate = "0000";
+    if (res.hasOwnProperty("imageLinks") === false) {
+      res.imageLinks = {
+        thumbnail:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRd-y-IJN8glQlf1qoU01dEgGPUa0d1-sjfWg&usqp=CAU",
+      };
     }
     if (res.hasOwnProperty("authors") === false) {
       res.authors = "Unknown Authors";
