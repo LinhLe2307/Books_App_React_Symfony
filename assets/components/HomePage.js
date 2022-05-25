@@ -1,14 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import React from "react";
 
-import BookCard from "./BookCard";
-
-const Home = () => {
-    return (
-        <div>
-           HomePage
-        </div >)
+const HomePage = () => {
+  return <div>Welcome to Homepage</div>;
 };
 
-export default Home;
+export default HomePage;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 
-const BookCard = ({ id, volumeInfo, handleAuthor, handleAdd }) => {
+const BookCard = ({ id, volumeInfo,  handleAdd }) => {
     const bookTitle = volumeInfo.title;
     const bookImage = volumeInfo.imageLinks?.thumbnail || volumeInfo.imageLinks?.smallThumbnail;
     const bookAuthors = volumeInfo.authors;
