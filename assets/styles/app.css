@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Dosis&family=Raleway&family=Roboto&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
 
 * {
   margin: 0;
@@ -30,4 +31,18 @@ a:hover {
 
 label {
   display: block !important;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+}
+
+#btnUp {
+  position: absolute;
+  left: 90vw;
+  top: 70vh;
+  border-radius: 50%;
+  padding: 0.5rem;
+  height: 50px;
+  width: 50px;
 }
