@@ -17,7 +17,7 @@ const HomePage = () => {
         `https://www.googleapis.com/books/v1/volumes?q=classics&filter=paid-ebooks&maxResults=40`
       )
       .then((res) => {
-        console.log(res.data.items);
+        // console.log(res.data.items);
         setBooks(res.data.items);
         setIsLoading(false);
       })

@@ -1,17 +1,34 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
-const BookCard = ({ id, volumeInfo, saleInfo, handleSave }) => {
-  const bookTitle = volumeInfo.title;
+const BookCard = ({ id, volumeInfo, saleInfo }) => {
+  const bookTitle =volumeInfo.title;
   const bookImage =
-    volumeInfo.imageLinks?.thumbnail || volumeInfo.imageLinks?.smallThumbnail;
+    volumeInfo.imageLinks.thumbnail || volumeInfo.imageLinks?.smallThumbnail;
   const bookAuthors = volumeInfo.authors;
   const publishedDate = volumeInfo.publishedDate;
-  const price = saleInfo.listPrice?.amount;
-  const currency = saleInfo.listPrice?.currencyCode;
+  const price = saleInfo.listPrice.amount;
+  const currency = saleInfo.listPrice.currencyCode;
 
   // Replacing all the spaces in URL with - for readability. Since the book title is for displaying only, we can use "-", if we use it for search, should use "+"
-  const titleFormat = bookTitle.replaceAll(" ", "-");
+  const titleFormat = bookTitle && bookTitle.replaceAll(" ", "-");
+
+  // add books
+  const handleSave = (productId) => {
+    console.log("add");
+    let formData = new FormData();
+    formData.append("order_id", 0); // cannot be null
+    formData.append("product_id", productId);
+    axios
+      .post("/api/shopping_cart", formData)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <div className="card" style={{ width: "15rem" }}>

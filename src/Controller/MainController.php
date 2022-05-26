@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Orders;
-use App\Entity\OrdersHasProducts;
+use App\Entity\OrderHasProducts;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -49,27 +49,32 @@ class MainController extends AbstractController
     }
     
     #[Route('/api/shopping_cart', name: 'list_books', methods:['GET'] )]
-    public function listBooks(EntitiManagerInterface $em): Response
+    public function listBooks(EntityManagerInterface $em): Response
     {
-        $books = $em->getRepository(OrdersHasProducts::class)->findAll();
+        $books = $em->getRepository(OrderHasProducts::class)->findAll();
         $data = [];
-        foreach($book as $books) {
+        foreach($books as $book) {
             $data[] = [
-                'id' => $books->getId(),
-                'order_id' => $books->getOrderId(),
-                'product_id' => $books->getProductId()
+                'id' => $book->getId(),
+                'order_id' => $book->getOrderId(),
+                'product_id' => $book->getProductId()
             ];
         }
-        return $this->json(data);
+        return $this->json($data);
     }
 
     #[Route('/api/shopping_cart', name: 'add_books', methods: ['POST'])]
     public function addBooks(Request $request, ManagerRegistry $doctrine): Response {
         $em = $doctrine->getManager();
-        $books = new OrdersHasProducts();
-        $books->setProductId($request->request->get('product_id'));
-        $em->persist($books);
+        $book = new OrderHasProducts();
+
+        $book->setProductId($request->request->get('product_id'));
+    
+        $book->setOrderId($request->request->get('order_id'));
+    
+        $em->persist($book);
         $em->flush();
+
         return $this->json("Add books successfully");
     }
 }

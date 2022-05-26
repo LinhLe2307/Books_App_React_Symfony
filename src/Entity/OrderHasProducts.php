@@ -16,7 +16,7 @@ class OrderHasProducts
     #[ORM\Column(type: 'integer')]
     private $order_id;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'string', length: 50)]
     private $product_id;
 
     public function getId(): ?int
@@ -36,12 +36,12 @@ class OrderHasProducts
         return $this;
     }
 
-    public function getProductId(): ?int
+    public function getProductId(): ?string
     {
         return $this->product_id;
     }
 
-    public function setProductId(int $product_id): self
+    public function setProductId(string $product_id): self
     {
         $this->product_id = $product_id;
 

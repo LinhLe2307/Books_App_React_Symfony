@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import axios from 'axios';
 import BookCard from './BookCard';
+import { handleIndividualData } from '../handleIndividualData';
 
 const SearchPage = () => {
   const keyword = useParams().keyword; //Since users' input matches the keyword in URL, we can use it after q= to get the data
@@ -46,50 +47,10 @@ const SearchPage = () => {
   const handleAvailableData = (res) => {
     // If there are no date, images or title, make default value
     const availableData = res.data.items.map((book) => {
-      if (book.volumeInfo.hasOwnProperty('publishedDate') === false) {
-        book.volumeInfo.publishedDate = '0000';
-      }
-      if (book.volumeInfo.hasOwnProperty('imageLinks') === false) {
-        book.volumeInfo.imageLinks = {
-          thumbnail:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRd-y-IJN8glQlf1qoU01dEgGPUa0d1-sjfWg&usqp=CAU',
-        };
-      }
-      if (book.volumeInfo.hasOwnProperty('title') === false) {
-        book.volumeInfo.title = 'No Title';
-      }
-
-      if (book.saleInfo.hasOwnProperty('listPrice') === false) {
-        book.saleInfo.listPrice = {
-          amount: 9.8,
-          currencyCode: "EUR"
-        };
-      }
-
-      if (book.volumeInfo.hasOwnProperty('authors') === false) {
-        book.volumeInfo.authors = 'Unknown Authors';
-      }
-      return book;
+      return handleIndividualData(book)
     });
     return availableData;
   };
-
-  // const handleAdd = (product_id) {
-  //   setProductId(product_id);
-  // }
-  // add books
-  const handleSave = (productId) => {
-    let formData = new FormData();
-    formData.append("product_id", productId);
-    axios
-      .post("/api/shopping_cart", formData)
-      .then(response => {
-        console.log(response)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-  }
 
   // This is for comparing years, months and dates between books
   const sortedDate = books.sort((a, b) => {
@@ -150,7 +111,7 @@ const SearchPage = () => {
 
       <div className="row align-items-center">
         {sortedDate.map((book) => {
-          return <BookCard key={book.id} {...book} handleSave={handleSave} />;
+          return <BookCard key={book.id} {...book} />;
         })}
       </div>
     </>
