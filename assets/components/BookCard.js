@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
 const BookCard = ({ id, volumeInfo, saleInfo, handleAdd }) => {
   const bookTitle = volumeInfo.title;
@@ -8,12 +8,13 @@ const BookCard = ({ id, volumeInfo, saleInfo, handleAdd }) => {
   const bookAuthors = volumeInfo.authors;
   const publishedDate = volumeInfo.publishedDate;
   const price = saleInfo.listPrice?.amount;
+  const currency = saleInfo.listPrice?.currencyCode;
 
   // Replacing all the spaces in URL with - for readability. Since the book title is for displaying only, we can use "-", if we use it for search, should use "+"
-  const titleFormat = bookTitle.replaceAll(' ', '-');
+  const titleFormat = bookTitle.replaceAll(" ", "-");
 
   return (
-    <div className="card" style={{ width: '15rem' }}>
+    <div className="card" style={{ width: "15rem" }}>
       {/* This is for taking the image */}
       <img src={bookImage} alt={bookTitle} className="card-img-top" />
 
@@ -24,11 +25,11 @@ const BookCard = ({ id, volumeInfo, saleInfo, handleAdd }) => {
         </Link>
         <ul>
           {/* Link cannot be click when it's Unknown Authors  */}
-          {bookAuthors === 'Unknown Authors' ? (
+          {bookAuthors === "Unknown Authors" ? (
             <li>Unknown Authors</li>
           ) : (
             bookAuthors?.map((author) => {
-              const authorQuery = author.replaceAll(' ', '+');
+              const authorQuery = author.replaceAll(" ", "+");
               return (
                 <li key={author}>
                   <Link to={`/search/author/${authorQuery}`}>{author}</Link>
@@ -38,7 +39,10 @@ const BookCard = ({ id, volumeInfo, saleInfo, handleAdd }) => {
           )}
         </ul>
         <p>Date: {publishedDate}</p>
-        <div>{price ? price + '€' : 'Not for sale'} </div>
+        {/* <div>{price ? price + "€" : "10€"} </div> */}
+        <div>
+          {price} {currency}
+        </div>
       </div>
 
       <button onClick={() => handleAdd()}>Add to Cart</button>

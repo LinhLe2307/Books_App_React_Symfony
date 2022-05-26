@@ -63,6 +63,13 @@ const SearchPage = () => {
         book.volumeInfo.title = 'No Title';
       }
 
+      if (book.saleInfo.hasOwnProperty('listPrice') === false) {
+        book.saleInfo.listPrice = {
+          amount: 9.8,
+          currencyCode: "EUR"
+        };
+      }
+
       if (book.volumeInfo.hasOwnProperty('authors') === false) {
         book.volumeInfo.authors = 'Unknown Authors';
       }
