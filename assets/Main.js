@@ -1,18 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React from "react";
+import ReactDOM from "react-dom/client";
 import {
   BrowserRouter as BrowserRouter,
   Routes,
   Route,
   Navigate,
-} from 'react-router-dom';
+} from "react-router-dom";
 
-import Layout from './pages/Layout';
-import HomePage from './components/HomePage';
-import ShoppingCart from './components/ShoppingCart';
-import BookDetails from './components/BookDetails';
-import SearchPage from './components/SearchPage';
-import Checkout from './components/Checkout';
+import Layout from "./pages/Layout";
+import HomePage from "./components/HomePage";
+import ShoppingCart from "./components/ShoppingCart";
+import BookDetails from "./components/BookDetails";
+import SearchPage from "./components/SearchPage";
+import Checkout from "./components/Checkout";
 
 function Main() {
   const NoMatch = () => {
@@ -24,9 +24,10 @@ function Main() {
         <Route exact path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
 
+          <Route path="/:id/:title" element={<BookDetails />} />
           {/* This is when searching keyword (users' inputs) */}
           <Route path="/search/:keyword" element={<SearchPage />} />
-          <Route path="/search/:keyword/:id/:tile" element={<BookDetails />} />
+          <Route path="/search/:keyword/:id/:title" element={<BookDetails />} />
 
           {/* This is when clicking authors */}
           <Route exact path="/search/author/:name" element={<SearchPage />} />
@@ -50,7 +51,7 @@ function Main() {
 
 export default Main;
 
-const root = ReactDOM.createRoot(document.getElementById('app'));
+const root = ReactDOM.createRoot(document.getElementById("app"));
 root.render(
   <React.StrictMode>
     <Main />
