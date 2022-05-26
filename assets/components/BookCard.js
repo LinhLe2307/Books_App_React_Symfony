@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const BookCard = ({ id, volumeInfo, saleInfo, handleAdd }) => {
+const BookCard = ({ id, volumeInfo, saleInfo, handleSave }) => {
   const bookTitle = volumeInfo.title;
   const bookImage =
     volumeInfo.imageLinks?.thumbnail || volumeInfo.imageLinks?.smallThumbnail;
@@ -39,13 +39,12 @@ const BookCard = ({ id, volumeInfo, saleInfo, handleAdd }) => {
           )}
         </ul>
         <p>Date: {publishedDate}</p>
-        {/* <div>{price ? price + "€" : "10€"} </div> */}
         <div>
           {price} {currency}
         </div>
       </div>
 
-      <button onClick={() => handleAdd()}>Add to Cart</button>
+      <button onClick={() => handleSave(id)}>Add to Cart</button>
     </div>
   );
 };

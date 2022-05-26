@@ -9,6 +9,7 @@ const SearchPage = () => {
   const [books, setBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [sort, setSort] = useState('');
+  // const [productId, setProductId] = useState("");
 
   // fetch books from Google API based on users' inputs. Default volume is 10 but we can get the maximum allowable results up to 40
   const fetchBooks = () => {
@@ -42,11 +43,6 @@ const SearchPage = () => {
       .catch((error) => console.log(error));
   };
 
-  // Add chosen books to API
-  const handleAdd = () => {
-    // need API to add
-  };
-
   const handleAvailableData = (res) => {
     // If there are no date, images or title, make default value
     const availableData = res.data.items.map((book) => {
@@ -77,6 +73,23 @@ const SearchPage = () => {
     });
     return availableData;
   };
+
+  // const handleAdd = (product_id) {
+  //   setProductId(product_id);
+  // }
+  // add books
+  const handleSave = (productId) => {
+    let formData = new FormData();
+    formData.append("product_id", productId);
+    axios
+      .post("/api/shopping_cart", formData)
+      .then(response => {
+        console.log(response)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
 
   // This is for comparing years, months and dates between books
   const sortedDate = books.sort((a, b) => {
@@ -128,9 +141,6 @@ const SearchPage = () => {
   return (
     <>
       <select defaultValue={sort} onChange={handleSort}>
-        {/* <option value="sort" disabled>
-          Sort
-        </option> */}
         <option value="" invalid="true" hidden>
           Sort
         </option>
@@ -140,7 +150,7 @@ const SearchPage = () => {
 
       <div className="row align-items-center">
         {sortedDate.map((book) => {
-          return <BookCard key={book.id} {...book} />;
+          return <BookCard key={book.id} {...book} handleSave={handleSave} />;
         })}
       </div>
     </>
