@@ -10,7 +10,6 @@ const SearchPage = () => {
   const [books, setBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [sort, setSort] = useState('');
-  // const [productId, setProductId] = useState("");
 
   // fetch books from Google API based on users' inputs. Default volume is 10 but we can get the maximum allowable results up to 40
   const fetchBooks = () => {
@@ -109,7 +108,7 @@ const SearchPage = () => {
         <option value="newest">Newest</option>
       </select>
 
-      <div className="row align-items-center">
+      <div className="justify-content-center d-flex p-2 flex-wrap">
         {sortedDate.map((book) => {
           return <BookCard key={book.id} {...book} />;
         })}

@@ -44,13 +44,10 @@ const Header = () => {
           <ul className="nav">
             <li className="nav-item">
               <Link to="/" className="nav-link active">
-                Search
+                Home
               </Link>
             </li>
             <li className="nav-item">
-              {/* <Link to="/contact" className="nav-link active">
-                Contact
-              </Link> */}
               {/*......... Scroll down to contacts on any page...........*/}
               <a href="#contacts" className="nav-link active">
                 Contacts

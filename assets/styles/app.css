@@ -1,18 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Dosis&family=Raleway&family=Roboto&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+@import url("https://fonts.googleapis.com/css2?family=Dosis&family=Raleway&family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
 
 * {
   margin: 0;
   padding: 0;
 }
 
+:root {
+  --bg-color: rgb(187, 90, 58);
+  --font-color: white;
+}
+
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 h1 {
-  font-family: 'Pacifico', cursive;
+  font-family: "Pacifico", cursive;
 }
 
 li {
@@ -31,10 +36,59 @@ a:hover {
 
 label {
   display: block !important;
+  margin-top: 2.5rem;
+}
+
+footer {
+  background-color: var(--bg-color);
+  color: var(--font-color);
+}
+
+footer a {
+  color: var(--font-color);
+}
+textarea,
+.text-line {
+  border: none;
+  border-bottom: 1px solid #000000;
+  padding: 2px;
+  width: 250px;
+  font-size: 14px;
+  background: transparent;
+}
+
+textarea {
+  overflow-y: scroll;
+  height: 26px;
+  resize: none;
+}
+
+textarea:focus,
+input:focus {
+  border-bottom: 1px solid #000000;
+  outline: none;
+}
+
+.row {
+  --bs-gutter-x: 5rem !important;
+}
+
+#contacts {
+  background-color: rgb(255, 239, 236);
+  padding: 4rem 0 3rem;
+  margin-top: 2rem;
 }
 
 .material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 48;
+}
+
+#btnSubmit {
+  background-color: var(--bg-color);
+  color: var(--font-color);
+  width: 9rem;
+  height: 2.5rem;
+  margin-top: 2rem;
 }
 
 #btnUp {
