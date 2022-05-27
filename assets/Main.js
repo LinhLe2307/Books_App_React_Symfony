@@ -1,18 +1,18 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import {
   BrowserRouter as BrowserRouter,
   Routes,
   Route,
   Navigate,
-} from "react-router-dom";
+} from 'react-router-dom';
 
-import Layout from "./pages/Layout";
-import HomePage from "./components/HomePage";
-import ShoppingCart from "./components/ShoppingCart";
-import BookDetails from "./components/BookDetails";
-import SearchPage from "./components/SearchPage";
-import Checkout from "./components/Checkout";
+import Layout from './pages/Layout';
+import HomePage from './components/HomePage';
+import ShoppingCart from './components/ShoppingCart';
+import BookDetails from './components/BookDetails';
+import SearchPage from './components/SearchPage';
+import Checkout from './components/Checkout';
 
 function Main() {
   const NoMatch = () => {
@@ -51,9 +51,9 @@ function Main() {
 
 export default Main;
 
-const root = ReactDOM.createRoot(document.getElementById("app"));
+const root = ReactDOM.createRoot(document.getElementById('app'));
 root.render(
-  <React.StrictMode>
-    <Main />
-  </React.StrictMode>
+  //<React.StrictMode>
+  <Main />
+  //</React.StrictMode>
 );
