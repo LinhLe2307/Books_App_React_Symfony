@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
 const BookCard = ({ id, volumeInfo, saleInfo }) => {
+  const [selectedBooks, setSelectedBooks] = useState([]);
+
   const bookTitle =volumeInfo.title;
   const bookImage =
     volumeInfo.imageLinks.thumbnail || volumeInfo.imageLinks?.smallThumbnail;
@@ -14,21 +15,15 @@ const BookCard = ({ id, volumeInfo, saleInfo }) => {
   // Replacing all the spaces in URL with - for readability. Since the book title is for displaying only, we can use "-", if we use it for search, should use "+"
   const titleFormat = bookTitle && bookTitle.replaceAll(" ", "-");
 
-  // add books
-  const handleSave = (productId) => {
-    console.log("add");
-    let formData = new FormData();
-    formData.append("order_id", 0); // cannot be null
-    formData.append("product_id", productId);
-    axios
-      .post("/api/shopping_cart", formData)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  const handleAdd = (id) => {
+    const newSelectedBooks = [...selectedBooks];
+    newSelectedBooks.push(id);
+    setSelectedBooks(newSelectedBooks);
+  }
+
+  useEffect(() => {
+    console.log(selectedBooks)
+  }, [selectedBooks])
 
   return (
     <div className="card" style={{ width: "15rem" }}>
@@ -61,7 +56,7 @@ const BookCard = ({ id, volumeInfo, saleInfo }) => {
         </div>
       </div>
 
-      <button onClick={() => handleSave(id)}>Add to Cart</button>
+      <button onClick={() => handleAdd(id)}>Add to Cart</button>
     </div>
   );
 };
