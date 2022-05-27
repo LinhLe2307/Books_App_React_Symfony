@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import axios from "axios";
-import { handleIndividualData } from "../handleIndividualData";
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import axios from 'axios';
+import { handleIndividualData } from '../handleIndividualData';
 
 const BookDetails = () => {
   // Since book's id matches the id in URL, we can use it as query to get the data
   const id = useParams().id;
   const [bookInfo, setBookInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [bookToShopCart, setBookToShopCart] = useState({});
 
   const bookTitle = bookInfo.volumeInfo?.title;
   const bookImage =
-    bookInfo.volumeInfo?.imageLinks?.thumbnail || bookInfo.volumeInfo?.imageLinks?.smallThumbnail;
+    bookInfo.volumeInfo?.imageLinks?.thumbnail ||
+    bookInfo.volumeInfo?.imageLinks?.smallThumbnail;
   const bookAuthors = bookInfo.volumeInfo?.authors;
   const publishedDate = bookInfo.volumeInfo?.publishedDate;
   const description = bookInfo.volumeInfo?.description;
@@ -20,12 +22,12 @@ const BookDetails = () => {
 
   // add books
   const handleSave = (productId) => {
-    console.log("add");
+    console.log('add');
     let formData = new FormData();
-    formData.append("order_id", 0); // cannot be null
-    formData.append("product_id", productId);
+    formData.append('order_id', 0); // cannot be null
+    formData.append('product_id', productId);
     axios
-      .post("/api/shopping_cart", formData)
+      .post('/api/shopping_cart', formData)
       .then((response) => {
         console.log(response);
       })
@@ -41,6 +43,8 @@ const BookDetails = () => {
       .then((res) => {
         const data = handleIndividualData(res.data);
         setBookInfo(data);
+        //Data that will be passed to shopping cart
+        setBookToShopCart(res.data);
         setIsLoading(false);
       })
       .catch((error) => console.log(error));
@@ -62,21 +66,30 @@ const BookDetails = () => {
       <ul>
         <h5>Author:</h5>
         {/* Link cannot be click when it's Unknown Authors  */}
-        {bookAuthors === "Unknown Authors"
-          ? "Unknown Authors"
+        {bookAuthors === 'Unknown Authors'
+          ? 'Unknown Authors'
           : bookAuthors?.map((author) => {
-            const authorQuery = author.replaceAll(" ", "+");
-            return (
-              <li key={author}>
-                <Link to={`/search/author/${authorQuery}`}>{author}</Link>
-              </li>
-            );
-          })}
+              const authorQuery = author.replaceAll(' ', '+');
+              return (
+                <li key={author}>
+                  <Link to={`/search/author/${authorQuery}`}>{author}</Link>
+                </li>
+              );
+            })}
       </ul>
-      <h4>{price} {currency}</h4>
+      <h4>
+        {price} {currency}
+      </h4>
       <h5>Date: {publishedDate}</h5>
       <p>{description}</p>
-      <button onClick={() => handleSave(id)}>Add to Cart</button>
+      {/* <button onClick={() => handleSave(id)}>Add to Cart</button> */}
+      <Link
+        to={'/shopping-cart/'}
+        state={{ data: bookToShopCart }}
+        className="btn btn-primary"
+      >
+        Add to Cart
+      </Link>
     </div>
   );
 };

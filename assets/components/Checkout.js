@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 
 const Checkout = (props) => {
   const [orders, setOrders] = useState([]);
@@ -11,9 +12,12 @@ const Checkout = (props) => {
     productName: '',
   });
   const [isSaving, setIsSaving] = useState(false);
+  const location = useLocation();
+  const order = location.state?.data ? location.state.data : '';
 
   useEffect(() => {
     fetchOrders();
+    console.log(order);
   }, []);
 
   const fetchOrders = () => {
@@ -21,7 +25,7 @@ const Checkout = (props) => {
       .get('/api/checkout')
       .then((res) => {
         setOrders(res.data);
-        console.log(res.data);
+        // console.log(res.data);
       })
       .catch((err) => {
         console.log('Axios error: ', err);
@@ -102,37 +106,38 @@ const Checkout = (props) => {
             }}
           ></input>
         </div>
-        <div className="form-group">
-          <label htmlFor="address">Book name</label>
-          <input
-            type="text"
-            className="form-control"
-            name="productName"
-            onChange={(e) => {
-              setAddress({ ...address, productName: e.target.value });
-            }}
-          ></input>
-        </div>
       </form>
       {/*....... Order overview .......*/}
       <div className="border rounded m-3 p-3">
         <h3>Your order</h3>
+        {/* Billing details */}
+        <h4></h4>
+        <div>
+          {address.firstname} {address.lastname}
+        </div>
+        <div> {address.address}</div>
+        {/* Products list */}
         <table className="table">
           <thead>
             <tr>
-              <th scope="col">Book name</th>
-              <th scope="col">First name</th>
-              <th scope="col">Last name</th>
-              <th scope="col">Address</th>
+              <th scope="col">Book ID</th>
+              <th scope="col">Book</th>
+              <th scope="col">Price</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>{address.productName}</td>
-              <td>{address.firstname}</td>
-              <td>{address.lastname}</td>
-              <td>{address.address}</td>
-            </tr>
+            {order.map((product, key) => {
+              return (
+                <tr key={key}>
+                  <td>{product.id}</td>
+                  <td>
+                    {product.volumeInfo?.title} -{' '}
+                    {product.volumeInfo?.authors[0]}
+                  </td>
+                  <td>{product.saleInfo?.listPrice?.amount}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
         <button

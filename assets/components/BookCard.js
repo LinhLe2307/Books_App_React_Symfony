@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const BookCard = ({ id, volumeInfo, saleInfo }) => {
   const [selectedBooks, setSelectedBooks] = useState([]);
 
-  const bookTitle =volumeInfo.title;
+  const bookTitle = volumeInfo.title;
   const bookImage =
     volumeInfo.imageLinks.thumbnail || volumeInfo.imageLinks?.smallThumbnail;
   const bookAuthors = volumeInfo.authors;
@@ -13,20 +13,20 @@ const BookCard = ({ id, volumeInfo, saleInfo }) => {
   const currency = saleInfo.listPrice.currencyCode;
 
   // Replacing all the spaces in URL with - for readability. Since the book title is for displaying only, we can use "-", if we use it for search, should use "+"
-  const titleFormat = bookTitle && bookTitle.replaceAll(" ", "-");
+  const titleFormat = bookTitle && bookTitle.replaceAll(' ', '-');
 
   const handleAdd = (id) => {
     const newSelectedBooks = [...selectedBooks];
     newSelectedBooks.push(id);
     setSelectedBooks(newSelectedBooks);
-  }
+  };
 
-  useEffect(() => {
-    console.log(selectedBooks)
-  }, [selectedBooks])
+  // useEffect(() => {
+  //   console.log(selectedBooks);
+  // }, [selectedBooks]);
 
   return (
-    <div className="card" style={{ width: "15rem" }}>
+    <div className="card" style={{ width: '15rem' }}>
       {/* This is for taking the image */}
       <img src={bookImage} alt={bookTitle} className="card-img-top" />
 
@@ -37,11 +37,11 @@ const BookCard = ({ id, volumeInfo, saleInfo }) => {
         </Link>
         <ul>
           {/* Link cannot be click when it's Unknown Authors  */}
-          {bookAuthors === "Unknown Authors" ? (
+          {bookAuthors === 'Unknown Authors' ? (
             <li>Unknown Authors</li>
           ) : (
             bookAuthors?.map((author) => {
-              const authorQuery = author.replaceAll(" ", "+");
+              const authorQuery = author.replaceAll(' ', '+');
               return (
                 <li key={author}>
                   <Link to={`/search/author/${authorQuery}`}>{author}</Link>
