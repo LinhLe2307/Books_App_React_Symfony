@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import BookCard from "./BookCard";
+import { handleIndividualData } from "../handleIndividualData";
 
 const HomePage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,11 +18,19 @@ const HomePage = () => {
         `https://www.googleapis.com/books/v1/volumes?q=classics&filter=paid-ebooks&maxResults=40`
       )
       .then((res) => {
-        // console.log(res.data.items);
-        setBooks(res.data.items);
+        const data = handleAvailableData(res);
+        setBooks(data);
         setIsLoading(false);
       })
       .catch((error) => console.log(error));
+  };
+
+  const handleAvailableData = (res) => {
+    // If there are no date, images or title, make default value
+    const availableData = res.data.items.map((book) => {
+      return handleIndividualData(book);
+    });
+    return availableData;
   };
 
   return (

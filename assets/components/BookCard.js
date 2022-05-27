@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const BookCard = ({ id, volumeInfo, saleInfo }) => {
   const [selectedBooks, setSelectedBooks] = useState([]);
 
-  const bookTitle =volumeInfo.title;
+  const bookTitle = volumeInfo.title;
   const bookImage =
     volumeInfo.imageLinks.thumbnail || volumeInfo.imageLinks?.smallThumbnail;
   const bookAuthors = volumeInfo.authors;
@@ -19,11 +19,7 @@ const BookCard = ({ id, volumeInfo, saleInfo }) => {
     const newSelectedBooks = [...selectedBooks];
     newSelectedBooks.push(id);
     setSelectedBooks(newSelectedBooks);
-  }
-
-  useEffect(() => {
-    console.log(selectedBooks)
-  }, [selectedBooks])
+  };
 
   return (
     <div className="card" style={{ width: "15rem" }}>
