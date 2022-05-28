@@ -9,7 +9,7 @@ const Footer = () => {
                 <div className="text-center p-3">
                     <div>
                         All the pictures are licensed under{" "}
-                        <a href="https://unsplash.com/">Unsplash</a> license
+                        <a href="https://unsplash.com/" target="_blank">Unsplash</a> license
                     </div>
                     <div>© 2022 Copyright</div>
                 </div>
