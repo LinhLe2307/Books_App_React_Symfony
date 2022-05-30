@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import BookCard from "./BookCard";
-import { handleIndividualData } from "../handleIndividualData";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import BookCard from './BookCard';
+import { handleIndividualData } from '../handleIndividualData';
 
 const HomePage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +35,7 @@ const HomePage = () => {
 
   return (
     <div>
-      <h1>Homepage</h1>
+      <h1 className="p-3 m-2">Homepage</h1>
       <div className="justify-content-center d-flex p-2 flex-wrap">
         {books.map((book, key) => {
           return <BookCard key={key} {...book} />;

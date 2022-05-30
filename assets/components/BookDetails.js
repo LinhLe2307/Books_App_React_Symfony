@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import axios from "axios";
-import { handleIndividualData } from "../handleIndividualData";
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import axios from 'axios';
+import { handleIndividualData } from '../handleIndividualData';
 
 const BookDetails = () => {
   // Since book's id matches the id in URL, we can use it as query to get the data
@@ -50,10 +50,10 @@ const BookDetails = () => {
       <ul>
         <h5>Author:</h5>
         {/* Link cannot be click when it's Unknown Authors  */}
-        {bookAuthors === "Unknown Authors"
-          ? "Unknown Authors"
+        {bookAuthors === 'Unknown Authors'
+          ? 'Unknown Authors'
           : bookAuthors?.map((author) => {
-              const authorQuery = author.replaceAll(" ", "+");
+              const authorQuery = author.replaceAll(' ', '+');
               return (
                 <li key={author}>
                   <Link to={`/search/author/${authorQuery}`}>{author}</Link>
@@ -68,7 +68,7 @@ const BookDetails = () => {
       <p>{description}</p>
       {/* <button onClick={() => handleSave(id)}>Add to Cart</button> */}
       <Link
-        to={"/shopping-cart/"}
+        to={'/shopping-cart/'}
         state={{ data: bookToShopCart }}
         className="btn btn-primary"
       >

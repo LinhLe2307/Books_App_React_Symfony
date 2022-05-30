@@ -9,10 +9,13 @@ import { bookList } from './ShoppingList';
 const ShoppingCart = () => {
   const [booksInACart, setBooksInACart] = useState([]);
   const location = useLocation();
-  const newBook = location.state?.data ? location.state.data : '';
+  const [newBook, setNewBook] = useState(
+    location.state?.data ? location.state.data : ''
+  );
+  // let newBook = location.state?.data ? location.state.data : '';
 
   useEffect(() => {
-    console.log(newBook);
+    // console.log(newBook);
     setBooksInACart([...booksInACart, newBook]);
     addNewBook();
 
@@ -29,27 +32,50 @@ const ShoppingCart = () => {
   const addNewBook = () => {
     //Helper list that keeps track of added books
     booksInACart == '' ? '' : bookList.push(...booksInACart);
+    //If a new book is not empty add it to bookList
     newBook == '' ? '' : bookList.push(newBook);
-    console.log('Books list: ', bookList);
+    console.log('Books list on load: ', bookList);
+  };
+
+  const handleDeleteBook = (e) => {
+    let bookId = e.target.name;
+
+    //Clear new book if id matches
+    newBook.id == bookId ? setNewBook('') : '';
+    //Find book by id and delete
+    let i = bookList.findIndex((book) => book.id == bookId);
+    bookList.splice(i, 1);
+    setBooksInACart(...bookList);
   };
 
   if (!bookList.length == 0) {
     return (
       <div>
-        <h1>Shopping Cart</h1>
+        <h1 className="p-3 m-2">Shopping Cart</h1>
         {bookList?.map((book, key) => {
           return (
-            <div className="order card" key={key}>
-              <h2 className="card-title">
-                Title: {book.volumeInfo?.title} - {book.volumeInfo?.authors[0]}
-              </h2>
-              <img
-                className="card-image"
-                src={book.volumeInfo?.imageLinks?.thumbnail}
-                style={{ height: '100px', width: '80px' }}
-              ></img>
-              <div className="card-body">
-                Price: {book.saleInfo?.listPrice?.amount}
+            <div className="order card m-2" key={key}>
+              <div className="card-body d-inline-flex">
+                <img
+                  className="card-image d-inline-flex p-2"
+                  src={book.volumeInfo?.imageLinks?.thumbnail}
+                  style={{ height: '100px', width: '80px' }}
+                ></img>
+                <div className="card-content d-inline">
+                  <h2 className="card-title">
+                    Title: {book.volumeInfo?.title} -{' '}
+                    {book.volumeInfo?.authors[0]}
+                  </h2>
+                  Price: {book.saleInfo?.listPrice?.amount}
+                  {book.saleInfo?.listPrice?.currencyCode}
+                </div>
+                <button
+                  onClick={(e) => handleDeleteBook(e)}
+                  className="btn btn-light"
+                  name={book.id}
+                >
+                  x
+                </button>
               </div>
             </div>
           );
@@ -57,7 +83,7 @@ const ShoppingCart = () => {
         <Link
           to={'/checkout/'}
           state={{ data: bookList }}
-          className="btn btn-primary"
+          className="btn btn-primary m-2"
         >
           CHECKOUT
         </Link>
@@ -65,10 +91,10 @@ const ShoppingCart = () => {
     );
   } else {
     return (
-      <>
-        <h1>Shopping Cart</h1>
-        <div>Cart is empty</div>
-      </>
+      <div>
+        <h1 className="p-3 m-2">Shopping Cart</h1>
+        <div className="p-3">Cart is empty</div>
+      </div>
     );
   }
 };
