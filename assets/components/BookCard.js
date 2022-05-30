@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const BookCard = ({ id, volumeInfo, saleInfo }) => {
+const BookCard = (props) => {
+  const { id, volumeInfo, saleInfo } = props;
   const [selectedBooks, setSelectedBooks] = useState([]);
 
   const bookTitle = volumeInfo.title;
@@ -56,7 +57,16 @@ const BookCard = ({ id, volumeInfo, saleInfo }) => {
         </div>
       </div>
 
-      <button onClick={() => handleAdd(id)}>Add to Cart</button>
+      {/* <button className="btn btn-primary" onClick={() => handleAdd(id)}>
+        Add to Cart
+      </button> */}
+      <Link
+        to={'/shopping-cart/'}
+        state={{ data: props }}
+        className="btn btn-primary"
+      >
+        Add to Cart
+      </Link>
     </div>
   );
 };
