@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import Swal from 'sweetalert2';
-import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import Swal from "sweetalert2";
+import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 const Checkout = (props) => {
   const [orders, setOrders] = useState([]);
   const [address, setAddress] = useState({
-    firstname: '',
-    lastname: '',
-    address: '',
-    productName: '',
+    firstname: "",
+    lastname: "",
+    address: "",
+    productName: "",
   });
   const [isSaving, setIsSaving] = useState(false);
   const location = useLocation();
-  const order = location.state?.data ? location.state.data : '';
+  const order = location.state?.data ? location.state.data : "";
 
   useEffect(() => {
     fetchOrders();
@@ -22,52 +22,86 @@ const Checkout = (props) => {
 
   const fetchOrders = () => {
     axios
-      .get('/api/checkout')
+      .get("/api/checkout")
       .then((res) => {
         setOrders(res.data);
         // console.log(res.data);
       })
       .catch((err) => {
-        console.log('Axios error: ', err);
+        console.log("Axios error: ", err);
       });
+  };
+
+  const handlePostOrder = (formData) => {
+    let dataToSend =
+      address.productName +
+      ", " +
+      address.firstname +
+      " " +
+      address.lastname +
+      ", " +
+      address.address;
+    formData.append("address", dataToSend);
+    axios
+      .post("/api/checkout", formData)
+      .then((res) => {
+        Swal.fire({
+          icon: "success",
+          title: "Order placed successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        setIsSaving(false);
+        setAddress("");
+      })
+      .catch((err) => {
+        console.log("Axios error: ", err);
+        Swal.fire({
+          icon: "error",
+          title: "An error occured",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        setIsSaving(false);
+      });
+  };
+
+  const handleOrderHasProduct = (formData) => {
+    order.map((product) => {
+      formData.append("order_id", 1);
+      formData.append("product_id", product.id);
+
+      axios
+        .post("/api/order", formData)
+        .then((res) => {
+          Swal.fire({
+            icon: "success",
+            title: "Order placed successfully",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          setIsSaving(false);
+          setAddress("");
+        })
+        .catch((err) => {
+          console.log("Axios error: ", err);
+          Swal.fire({
+            icon: "error",
+            title: "An error occured",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          setIsSaving(false);
+        });
+    });
   };
 
   const handlePost = () => {
-    setIsSaving(true);
     let formData = new FormData();
-    let dataToSend =
-      address.productName +
-      ', ' +
-      address.firstname +
-      ' ' +
-      address.lastname +
-      ', ' +
-      address.address;
-    formData.append('address', dataToSend);
-    axios
-      .post('/api/checkout', formData)
-      .then((res) => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Order placed successfully',
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        setIsSaving(false);
-        setAddress('');
-      })
-      .catch((err) => {
-        console.log('Axios error: ', err);
-        Swal.fire({
-          icon: 'error',
-          title: 'An error occured',
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        setIsSaving(false);
-      });
+    setIsSaving(true);
+    handlePostOrder(formData);
+    handleOrderHasProduct(formData);
   };
-
   return (
     <div>
       {/*....... Billing details .......*/}
@@ -131,7 +165,7 @@ const Checkout = (props) => {
                 <tr key={key}>
                   <td>{product.id}</td>
                   <td>
-                    {product.volumeInfo?.title} -{' '}
+                    {product.volumeInfo?.title} -{" "}
                     {product.volumeInfo?.authors[0]}
                   </td>
                   <td>{product.saleInfo?.listPrice?.amount}</td>

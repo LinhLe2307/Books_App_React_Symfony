@@ -2,8 +2,6 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-
-import { handleIndividualData } from '../handleIndividualData';
 import { bookList } from './ShoppingList';
 
 const ShoppingCart = () => {
