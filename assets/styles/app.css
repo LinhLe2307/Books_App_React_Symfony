@@ -14,6 +14,7 @@
 
 body {
   font-family: "Roboto", sans-serif;
+  min-width: 1600px !important;
 }
 
 h1 {
@@ -47,7 +48,8 @@ footer {
 footer a {
   color: var(--font-color);
 }
-textarea,
+
+.textarea-line,
 .text-line {
   border: none;
   border-bottom: 1px solid #000000;
@@ -57,14 +59,15 @@ textarea,
   background: transparent;
 }
 
-textarea {
+.textarea-line {
   overflow-y: scroll;
   height: 26px;
   resize: none;
 }
 
-textarea:focus,
-input:focus {
+.textarea-line:focus,
+.text-line:focus {
+  /* background: transparent !important; */
   border-bottom: 1px solid #000000;
   outline: none;
 }
@@ -73,7 +76,7 @@ input:focus {
   --bs-gutter-x: 5rem !important;
 }
 
-#contacts {
+#contact {
   background-color: rgb(255, 239, 236);
   padding: 4rem 0 3rem;
   margin-top: 2rem;

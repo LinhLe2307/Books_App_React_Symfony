@@ -48,7 +48,7 @@ class MainController extends AbstractController
         return $this->json('Placed order successfully');
     }
     
-    #[Route('/api/shopping_cart', name: 'list_books', methods:['GET'] )]
+    #[Route('/api/order', name: 'list_books', methods:['GET'] )]
     public function listBooks(EntityManagerInterface $em): Response
     {
         $books = $em->getRepository(OrderHasProducts::class)->findAll();
@@ -63,7 +63,7 @@ class MainController extends AbstractController
         return $this->json($data);
     }
 
-    #[Route('/api/shopping_cart', name: 'add_books', methods: ['POST'])]
+    #[Route('/api/order', name: 'add_books', methods: ['POST'])]
     public function addBooks(Request $request, ManagerRegistry $doctrine): Response {
         $em = $doctrine->getManager();
         $book = new OrderHasProducts();
@@ -78,3 +78,4 @@ class MainController extends AbstractController
         return $this->json("Add books successfully");
     }
 }
+
