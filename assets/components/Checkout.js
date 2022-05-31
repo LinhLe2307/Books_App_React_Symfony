@@ -12,7 +12,6 @@ const Checkout = (props) => {
     productName: "",
   });
   const [isSaving, setIsSaving] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const location = useLocation();
   const order = location.state?.data ? location.state.data : "";
 
@@ -31,7 +30,9 @@ const Checkout = (props) => {
       });
   };
 
-  const handlePostOrder = (formData) => {
+  const handlePost = () => {
+    let formData = new FormData();
+    setIsSaving(true);
     const productIds = order.map((product) => product.id);
     let dataToSend =
       address.productName +
@@ -42,9 +43,8 @@ const Checkout = (props) => {
       ", " +
       address.address;
     formData.append("address", dataToSend);
-    // order.forEach((product) => {
     formData.append("product_id[]", productIds);
-    // });
+
     axios
       .post("/api/checkout", formData)
       .then((res) => {
@@ -56,10 +56,9 @@ const Checkout = (props) => {
         });
         setIsSaving(false);
         setAddress("");
-        setIsSubmitting((prevState) => !prevState);
       })
       .catch((err) => {
-        console.log("Axios error: ", err.response.data);
+        console.log("Axios error: ", err);
         Swal.fire({
           icon: "error",
           title: "An error occured",
@@ -70,36 +69,6 @@ const Checkout = (props) => {
       });
   };
 
-  const handleOrderHasProducts = (formData) => {
-    order.map((product) => {
-      formData.append("product_id", product.id);
-      axios
-        .post("/api/checkout", formData)
-        .then((res) => {
-          setIsSaving(false);
-          setAddress("");
-        })
-        .catch((err) => {
-          console.log("Axios error: ", err);
-          Swal.fire({
-            icon: "error",
-            title: "An error occured",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          setIsSaving(false);
-        });
-    });
-  };
-
-  const handlePost = () => {
-    let formData = new FormData();
-    setIsSaving(true);
-    handlePostOrder(formData);
-    // handleOrderHasProducts(formData);
-  };
-
-  useEffect(() => console.log(isSubmitting), [isSubmitting]);
   return (
     <div>
       {/*....... Billing details .......*/}
