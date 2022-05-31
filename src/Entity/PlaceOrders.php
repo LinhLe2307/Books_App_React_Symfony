@@ -2,43 +2,36 @@
 
 namespace App\Entity;
 
-use App\Repository\OrdersRepository;
+use App\Repository\PlaceOrdersRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: OrdersRepository::class)]
-class Orders
+#[ORM\Entity(repositoryClass: PlaceOrdersRepository::class)]
+class PlaceOrders
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $order_id;
+    private $id;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private $user_id;
 
-    #[ORM\Column(type: 'string', length: 500, nullable: true)]
+    #[ORM\Column(type: 'text', nullable: true)]
     private $address;
 
     #[ORM\OneToMany(mappedBy: 'order_id', targetEntity: OrderHasBooks::class)]
-    private $books;
+    private $booksIds;
 
     public function __construct()
     {
-        $this->books = new ArrayCollection();
+        $this->booksIds = new ArrayCollection();
     }
 
-    public function getOrderId(): ?int
+    public function getId(): ?int
     {
-        return $this->order_id;
-    }
-
-    public function setOrderId(int $order_id): self
-    {
-        $this->order_id = $order_id;
-
-        return $this;
+        return $this->id;
     }
 
     public function getUserId(): ?int
@@ -68,27 +61,27 @@ class Orders
     /**
      * @return Collection<int, OrderHasBooks>
      */
-    public function getBooks(): Collection
+    public function getBooksIds(): Collection
     {
-        return $this->books;
+        return $this->booksIds;
     }
 
-    public function addBook(OrderHasBooks $book): self
+    public function addBooksId(OrderHasBooks $booksId): self
     {
-        if (!$this->books->contains($book)) {
-            $this->books[] = $book;
-            $book->setOrderId($this);
+        if (!$this->booksIds->contains($booksId)) {
+            $this->booksIds[] = $booksId;
+            $booksId->setOrderId($this);
         }
 
         return $this;
     }
 
-    public function removeBook(OrderHasBooks $book): self
+    public function removeBooksId(OrderHasBooks $booksId): self
     {
-        if ($this->books->removeElement($book)) {
+        if ($this->booksIds->removeElement($booksId)) {
             // set the owning side to null (unless already changed)
-            if ($book->getOrderId() === $this) {
-                $book->setOrderId(null);
+            if ($booksId->getOrderId() === $this) {
+                $booksId->setOrderId(null);
             }
         }
 

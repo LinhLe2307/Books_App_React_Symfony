@@ -13,7 +13,7 @@ class OrderHasBooks
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Orders::class, inversedBy: 'books')]
+    #[ORM\ManyToOne(targetEntity: PlaceOrders::class, inversedBy: 'booksIds')]
     #[ORM\JoinColumn(nullable: false)]
     private $order_id;
 
@@ -25,12 +25,12 @@ class OrderHasBooks
         return $this->id;
     }
 
-    public function getOrderId(): ?Orders
+    public function getOrderId(): ?PlaceOrders
     {
         return $this->order_id;
     }
 
-    public function setOrderId(?Orders $order_id): self
+    public function setOrderId(?PlaceOrders $order_id): self
     {
         $this->order_id = $order_id;
 
