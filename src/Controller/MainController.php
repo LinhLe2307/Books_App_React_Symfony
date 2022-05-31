@@ -64,18 +64,22 @@ class MainController extends AbstractController
     }
 
     #[Route('/api/order', name: 'add_books', methods: ['POST'])]
-    public function addBooks(Request $request, ManagerRegistry $doctrine): Response {
+    public function addBooks(Request $request, ManagerRegistry $doctrine, EntityManagerInterface $em): Response {
+        $response = new Response();
         $em = $doctrine->getManager();
+        // $order = $em->getRepository('')
         $book = new OrderHasProducts();
 
+        $orderId = $doctrine->getRepository(Orders::class);
+
         $book->setProductId($request->request->get('product_id'));
-    
-        $book->setOrderId($request->request->get('order_id'));
-    
+        
         $em->persist($book);
         $em->flush();
 
         return $this->json("Add books successfully");
     }
+
+    
 }
 

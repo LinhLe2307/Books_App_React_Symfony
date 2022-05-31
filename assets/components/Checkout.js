@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import axios from "axios";
-import { useLocation } from "react-router-dom";
+import axios from "../../../web/node_modules/axios";
+import { useLocation } from "../../../web/node_modules/react-router-dom";
 
 const Checkout = (props) => {
   const [orders, setOrders] = useState([]);
@@ -12,12 +12,12 @@ const Checkout = (props) => {
     productName: "",
   });
   const [isSaving, setIsSaving] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const location = useLocation();
   const order = location.state?.data ? location.state.data : "";
 
   useEffect(() => {
     fetchOrders();
-    console.log(order);
   }, []);
 
   const fetchOrders = () => {
@@ -25,7 +25,7 @@ const Checkout = (props) => {
       .get("/api/checkout")
       .then((res) => {
         setOrders(res.data);
-        // console.log(res.data);
+        console.log(res.data);
       })
       .catch((err) => {
         console.log("Axios error: ", err);
@@ -53,6 +53,7 @@ const Checkout = (props) => {
         });
         setIsSaving(false);
         setAddress("");
+        setIsSubmitting((prevState) => !prevState);
       })
       .catch((err) => {
         console.log("Axios error: ", err);
@@ -68,29 +69,15 @@ const Checkout = (props) => {
 
   const handleOrderHasProduct = (formData) => {
     order.map((product) => {
-      formData.append("order_id", 1);
       formData.append("product_id", product.id);
-
       axios
         .post("/api/order", formData)
         .then((res) => {
-          Swal.fire({
-            icon: "success",
-            title: "Order placed successfully",
-            showConfirmButton: false,
-            timer: 1500,
-          });
           setIsSaving(false);
           setAddress("");
         })
         .catch((err) => {
           console.log("Axios error: ", err);
-          Swal.fire({
-            icon: "error",
-            title: "An error occured",
-            showConfirmButton: false,
-            timer: 1500,
-          });
           setIsSaving(false);
         });
     });
@@ -102,6 +89,8 @@ const Checkout = (props) => {
     handlePostOrder(formData);
     handleOrderHasProduct(formData);
   };
+
+  useEffect(() => console.log(isSubmitting), [isSubmitting]);
   return (
     <div>
       {/*....... Billing details .......*/}
