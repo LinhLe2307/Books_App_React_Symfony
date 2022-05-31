@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Orders;
-use App\Entity\OrderHasProducts;
+use App\Entity\OrderHasBooks;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -42,16 +42,36 @@ class MainController extends AbstractController
         $em = $doctrine->getManager();
         $order = new Orders();
         $order->setAddress($request->request->get('address'));
+        // $order->setAddress("Hi");
+        
+        $books = new OrderHasBooks();
+        $books->setOrderId($order);
+        $books->setProductId($request->request->get('product_id'));
+        // $books->setProductId("Hello");
+    
+
         $em->persist($order);
+        $em->persist($books);
         $em->flush();
 
         return $this->json('Placed order successfully');
     }
+    // #[Route('/api/checkout', name: 'place_order', methods:['POST'])]
+    // public function placeOrder(Request $request, ManagerRegistry $doctrine): Response
+    // {
+    //     $em = $doctrine->getManager();
+    //     $order = new Orders();
+    //     $order->setAddress($request->request->get('address'));
+    //     $em->persist($order);
+    //     $em->flush();
+
+    //     return $this->json('Placed order successfully');
+    // }
     
     #[Route('/api/order', name: 'list_books', methods:['GET'] )]
     public function listBooks(EntityManagerInterface $em): Response
     {
-        $books = $em->getRepository(OrderHasProducts::class)->findAll();
+        $books = $em->getRepository(OrderHasBooks::class)->findAll();
         $data = [];
         foreach($books as $book) {
             $data[] = [
@@ -63,19 +83,25 @@ class MainController extends AbstractController
         return $this->json($data);
     }
 
-    #[Route('/api/order', name: 'add_books', methods: ['POST'])]
-    public function addBooks(Request $request, ManagerRegistry $doctrine): Response {
-        $em = $doctrine->getManager();
-        $book = new OrderHasProducts();
+    // #[Route('/api/checkout', name: 'add_books', methods:['POST'])]
+    // public function addBooks(Request $request, ManagerRegistry $doctrine): Response
+    // {
+    //     $em = $doctrine->getManager();
+    //     $order = new Orders();
+    //     $order->setAddress($request->request->get('address'));
+    //     // $order->setAddress("Hi");
 
-        $book->setProductId($request->request->get('product_id'));
+    //     $books = new OrderHasBooks();
+    //     $books->setOrderId($order);
+    //     $books->setProductId($request->request->get('product_id'));
+    //     // $books->setProductId("Hello");
     
-        $book->setOrderId($request->request->get('order_id'));
-    
-        $em->persist($book);
-        $em->flush();
+    //     $em->persist($order);
+    //     $em->persist($books);
+    //     $em->flush();
 
-        return $this->json("Add books successfully");
-    }
+    //     return $this->json('Placed order successfully');
+    // }
+
 }
 

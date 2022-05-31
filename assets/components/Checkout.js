@@ -33,46 +33,17 @@ const Checkout = (props) => {
   };
 
   const handlePostOrder = (formData) => {
-    let dataToSend =
-      address.productName +
-      ", " +
-      address.firstname +
-      " " +
-      address.lastname +
-      ", " +
-      address.address;
-    formData.append("address", dataToSend);
-    axios
-      .post("/api/checkout", formData)
-      .then((res) => {
-        Swal.fire({
-          icon: "success",
-          title: "Order placed successfully",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        setIsSaving(false);
-        setAddress("");
-      })
-      .catch((err) => {
-        console.log("Axios error: ", err);
-        Swal.fire({
-          icon: "error",
-          title: "An error occured",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        setIsSaving(false);
-      });
-  };
-
-  const handleOrderHasProduct = (formData) => {
-    order.map((product) => {
-      formData.append("order_id", 1);
-      formData.append("product_id", product.id);
-
+      let dataToSend =
+        address.productName +
+        ", " +
+        address.firstname +
+        " " +
+        address.lastname +
+        ", " +
+        address.address;
+      formData.append("address", dataToSend);
       axios
-        .post("/api/order", formData)
+        .post("/api/checkout", formData)
         .then((res) => {
           Swal.fire({
             icon: "success",
@@ -84,7 +55,35 @@ const Checkout = (props) => {
           setAddress("");
         })
         .catch((err) => {
-          console.log("Axios error: ", err);
+          console.log("Axios error: ", err.response.data);
+          Swal.fire({
+            icon: "error",
+            title: "An error occured",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          setIsSaving(false);
+        });
+  };
+
+  const handleOrderHasProduct = (formData) => {
+    order.map((product) => {
+      // formData.append("order_id", 1);
+      formData.append("product_id", product.id);
+      axios
+        .post("/api/checkout", formData)
+        .then((res) => {
+          Swal.fire({
+            icon: "success",
+            title: "Order placed successfully",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          setIsSaving(false);
+          setAddress("");
+        })
+        .catch((err) => {
+          console.log("Axios error: ", err.response.data);
           Swal.fire({
             icon: "error",
             title: "An error occured",

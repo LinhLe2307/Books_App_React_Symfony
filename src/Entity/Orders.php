@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\OrdersRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrdersRepository::class)]
@@ -18,6 +20,14 @@ class Orders
 
     #[ORM\Column(type: 'string', length: 500, nullable: true)]
     private $address;
+
+    #[ORM\OneToMany(mappedBy: 'order_id', targetEntity: OrderHasBooks::class)]
+    private $books;
+
+    public function __construct()
+    {
+        $this->books = new ArrayCollection();
+    }
 
     public function getOrderId(): ?int
     {
@@ -51,6 +61,36 @@ class Orders
     public function setAddress(?string $address): self
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderHasBooks>
+     */
+    public function getBooks(): Collection
+    {
+        return $this->books;
+    }
+
+    public function addBook(OrderHasBooks $book): self
+    {
+        if (!$this->books->contains($book)) {
+            $this->books[] = $book;
+            $book->setOrderId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBook(OrderHasBooks $book): self
+    {
+        if ($this->books->removeElement($book)) {
+            // set the owning side to null (unless already changed)
+            if ($book->getOrderId() === $this) {
+                $book->setOrderId(null);
+            }
+        }
 
         return $this;
     }
