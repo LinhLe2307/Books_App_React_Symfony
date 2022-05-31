@@ -34,14 +34,14 @@ const HomePage = () => {
   };
 
   return (
-    <div>
-      <h1 className="p-3 m-2">Homepage</h1>
+    <main>
+      <h1 className="p-3 m-2 text-white">Homepage</h1>
       <div className="justify-content-center d-flex p-2 flex-wrap">
         {books.map((book, key) => {
           return <BookCard key={key} {...book} />;
         })}
       </div>
-    </div>
+    </main>
   );
 };
 

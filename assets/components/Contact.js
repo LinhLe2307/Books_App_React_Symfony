@@ -1,6 +1,6 @@
-import React from "react";
-import emailjs from "emailjs-com";
-import Swal from "sweetalert2";
+import React from 'react';
+import emailjs from 'emailjs-com';
+import Swal from 'sweetalert2';
 
 //install: npm install emailjs-com --save
 const Contact = () => {
@@ -8,12 +8,12 @@ const Contact = () => {
     e.preventDefault();
 
     emailjs
-      .sendForm("gmail", "book_nook_template", e.target, "JgVe0jEEd03wg5njc")
+      .sendForm('gmail', 'book_nook_template', e.target, 'JgVe0jEEd03wg5njc')
       .then(
         (result) => {
           Swal.fire({
-            icon: "success",
-            title: "Email sent successfully",
+            icon: 'success',
+            title: 'Email sent successfully',
             showConfirmButton: false,
             timer: 1500,
           });
@@ -21,8 +21,8 @@ const Contact = () => {
         },
         (error) => {
           Swal.fire({
-            icon: "error",
-            title: "An error occurred",
+            icon: 'error',
+            title: 'An error occurred',
             showConfirmButton: false,
             timer: 1500,
           });
@@ -61,7 +61,7 @@ const Contact = () => {
         </div>
         <button
           type="submit"
-          className="btn align-self-center mb-5"
+          className="btn btn-primary align-self-center mb-5"
           id="btnSubmit"
         >
           Submit
