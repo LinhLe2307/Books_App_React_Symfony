@@ -1,6 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Dosis&family=Raleway&family=Roboto&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+@import url('https://fonts.googleapis.com/css2?family=Dosis&family=Raleway&family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
 
 * {
   margin: 0;
@@ -8,37 +9,71 @@
 }
 
 :root {
-  --bg-color: rgb(187, 90, 58);
+  --bg-color: #1e2e4d;
+  --bg-gradient: linear-gradient(#0f335c, #49beff, #49beff) no-repeat;
   --font-color: white;
+  --accent-color: #ff5c00;
+  --accent-color-dark: #ea5701;
+}
+
+.btn-primary {
+  background-color: var(--accent-color);
+  border: 1px solid var(--accent-color);
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-color-dark);
+  border: 1px solid var(--accent-color-dark);
 }
 
 body {
-  font-family: "Roboto", sans-serif;
-  min-width: 1600px !important;
+  height: 100vh;
+  font-family: 'Roboto', sans-serif;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+header {
+  background-color: var(--bg-color);
+}
+
+main {
+  background: var(--bg-gradient);
+  position: relative;
+  top: -0.5rem;
 }
 
 h1 {
-  font-family: "Pacifico", cursive;
+  font-family: 'Pacifico', cursive;
+}
+
+h2 {
+  font-size: 1.3rem;
+  font-weight: 900;
 }
 
 li {
   list-style: none;
 }
 
-a {
+header a {
   text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline !important;
   cursor: pointer;
-  color: blue !important;
 }
 
 label {
   display: block !important;
   margin-top: 2.5rem;
 }
+
+/*...... Book card .......*/
+
+main .card {
+  border: none;
+  margin: 1px;
+}
+
+/*......... Footer ..........*/
 
 footer {
   background-color: var(--bg-color);
@@ -76,27 +111,60 @@ footer a {
   --bs-gutter-x: 5rem !important;
 }
 
+/*......... Contact ........*/
+
 #contact {
   background-color: rgb(255, 239, 236);
   padding: 4rem 0 3rem;
-  margin-top: 2rem;
+  position: relative;
+  /* top: -0.5rem; */
+}
+
+#contact h2 {
+  font-weight: 300;
 }
 
 .material-symbols-outlined {
-  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 48;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
 }
 
 #btnSubmit {
-  background-color: var(--bg-color);
-  color: var(--font-color);
   width: 9rem;
   height: 2.5rem;
   margin-top: 2rem;
 }
 
+/*............ Empty shopping cart ...........*/
+
+.empty-cart {
+  text-align: center;
+  width: 100%;
+  background-color: white;
+}
+
+.empty-cart .icon {
+  font-size: 10rem;
+}
+.empty-cart .text {
+  font-size: 2rem;
+}
+
+/*.......... Shopping cart with orders...........*/
+
+.card-price {
+  font-weight: 900;
+  text-align: right;
+}
+
+.card-info {
+  font-weight: 300;
+}
+
+/*............. Button scroll up ..........*/
+
 #btnUp {
   position: absolute;
-  left: 90vw;
+  left: 90%;
   top: 70vh;
   border-radius: 50%;
   padding: 0.5rem;

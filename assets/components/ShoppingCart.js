@@ -54,22 +54,31 @@ const ShoppingCart = () => {
           return (
             <div className="order card m-2" key={key}>
               <div className="card-body d-inline-flex">
+                {/*.......... Card image .........*/}
                 <img
                   className="card-image d-inline-flex p-2"
                   src={book.volumeInfo?.imageLinks?.thumbnail}
-                  style={{ height: '100px', width: '80px' }}
+                  style={{ height: '150px', width: 'auto' }}
                 ></img>
                 <div className="card-content d-inline">
+                  {/*.......... Card title .........*/}
                   <h2 className="card-title">
-                    Title: {book.volumeInfo?.title} -{' '}
-                    {book.volumeInfo?.authors[0]}
+                    {book.volumeInfo?.title} - {book.volumeInfo?.authors[0]}
                   </h2>
-                  Price: {book.saleInfo?.listPrice?.amount}
-                  {book.saleInfo?.listPrice?.currencyCode}
+                  {/*.......... Card info .........*/}
+                  <div className="card-info p-2">
+                    {book.searchInfo?.textSnippet}
+                  </div>
+                  {/*.......... Card price .........*/}
+                  <div className="card-price p-2">
+                    {book.saleInfo?.listPrice?.amount}{' '}
+                    {book.saleInfo?.listPrice?.currencyCode}
+                  </div>
                 </div>
+                {/*.......... Delete button .........*/}
                 <button
                   onClick={(e) => handleDeleteBook(e)}
-                  className="btn btn-light"
+                  className="btn btn-light btn-delete"
                   name={book.id}
                 >
                   x
@@ -91,7 +100,12 @@ const ShoppingCart = () => {
     return (
       <div>
         <h1 className="p-3 m-2">Shopping Cart</h1>
-        <div className="p-3">Cart is empty</div>
+        <div className="empty-cart text-muted">
+          <div className="p-3 empty-cart text">Cart is empty</div>
+          <span className="material-symbols-outlined empty-cart icon">
+            production_quantity_limits
+          </span>
+        </div>
       </div>
     );
   }

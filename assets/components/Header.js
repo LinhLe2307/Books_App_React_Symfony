@@ -16,14 +16,16 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky-top bg-light p-4">
-      <nav className="navbar-expand-lg navbar-light">
+    <header className="sticky-top p-4">
+      <nav className="navbar-expand-lg">
         <div
           className="navbar-collapse justify-content-between"
           id="navbarSupportedContent"
         >
           <h1 className="ml-5">
-            <Link to="/">Book Nook</Link>
+            <Link to="/" className="text-white">
+              Book Nook
+            </Link>
           </h1>
 
           {/* Send the inputField as :keyword to SearchPage to display it in URL and useParams().keyword to fetch query*/}
@@ -43,19 +45,21 @@ const Header = () => {
 
           <ul className="nav">
             <li className="nav-item">
-              <Link to="/" className="nav-link active">
+              <Link to="/" className="nav-link active text-white">
                 Home
               </Link>
             </li>
             <li className="nav-item">
               {/*......... Scroll down to contacts on any page...........*/}
-              <a href="#contacts" className="nav-link active">
+              <a href="#contact" className="nav-link active text-white">
                 Contacts
               </a>
             </li>
             <li className="nav-item">
               <Link to="/shopping-cart" className="nav-link active">
-                <span className="material-symbols-outlined">shopping_cart</span>
+                <span className="material-symbols-outlined text-white">
+                  shopping_cart
+                </span>
               </Link>
             </li>
           </ul>
