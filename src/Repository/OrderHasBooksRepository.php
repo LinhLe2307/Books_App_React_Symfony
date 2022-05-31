@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\OrderHasProducts;
+use App\Entity\OrderHasBooks;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<OrderHasProducts>
+ * @extends ServiceEntityRepository<OrderHasBooks>
  *
- * @method OrderHasProducts|null find($id, $lockMode = null, $lockVersion = null)
- * @method OrderHasProducts|null findOneBy(array $criteria, array $orderBy = null)
- * @method OrderHasProducts[]    findAll()
- * @method OrderHasProducts[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method OrderHasBooks|null find($id, $lockMode = null, $lockVersion = null)
+ * @method OrderHasBooks|null findOneBy(array $criteria, array $orderBy = null)
+ * @method OrderHasBooks[]    findAll()
+ * @method OrderHasBooks[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class OrderHasProductsRepository extends ServiceEntityRepository
+class OrderHasBooksRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, OrderHasProducts::class);
+        parent::__construct($registry, OrderHasBooks::class);
     }
 
-    public function add(OrderHasProducts $entity, bool $flush = false): void
+    public function add(OrderHasBooks $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class OrderHasProductsRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(OrderHasProducts $entity, bool $flush = false): void
+    public function remove(OrderHasBooks $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -40,7 +40,7 @@ class OrderHasProductsRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return OrderHasProducts[] Returns an array of OrderHasProducts objects
+//     * @return OrderHasBooks[] Returns an array of OrderHasBooks objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -54,7 +54,7 @@ class OrderHasProductsRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?OrderHasProducts
+//    public function findOneBySomeField($value): ?OrderHasBooks
 //    {
 //        return $this->createQueryBuilder('o')
 //            ->andWhere('o.exampleField = :val')

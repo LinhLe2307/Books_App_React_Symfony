@@ -25,7 +25,6 @@ const Checkout = (props) => {
       .get("/api/checkout")
       .then((res) => {
         setOrders(res.data);
-        console.log(res.data);
       })
       .catch((err) => {
         console.log("Axios error: ", err);
@@ -33,6 +32,7 @@ const Checkout = (props) => {
   };
 
   const handlePostOrder = (formData) => {
+    const productIds = order.map((product) => product.id);
     let dataToSend =
       address.productName +
       ", " +
@@ -42,6 +42,9 @@ const Checkout = (props) => {
       ", " +
       address.address;
     formData.append("address", dataToSend);
+    // order.forEach((product) => {
+    formData.append("product_id[]", productIds);
+    // });
     axios
       .post("/api/checkout", formData)
       .then((res) => {
@@ -56,7 +59,7 @@ const Checkout = (props) => {
         setIsSubmitting((prevState) => !prevState);
       })
       .catch((err) => {
-        console.log("Axios error: ", err);
+        console.log("Axios error: ", err.response.data);
         Swal.fire({
           icon: "error",
           title: "An error occured",
@@ -67,17 +70,23 @@ const Checkout = (props) => {
       });
   };
 
-  const handleOrderHasProduct = (formData) => {
+  const handleOrderHasProducts = (formData) => {
     order.map((product) => {
       formData.append("product_id", product.id);
       axios
-        .post("/api/order", formData)
+        .post("/api/checkout", formData)
         .then((res) => {
           setIsSaving(false);
           setAddress("");
         })
         .catch((err) => {
           console.log("Axios error: ", err);
+          Swal.fire({
+            icon: "error",
+            title: "An error occured",
+            showConfirmButton: false,
+            timer: 1500,
+          });
           setIsSaving(false);
         });
     });
@@ -87,7 +96,7 @@ const Checkout = (props) => {
     let formData = new FormData();
     setIsSaving(true);
     handlePostOrder(formData);
-    handleOrderHasProduct(formData);
+    // handleOrderHasProducts(formData);
   };
 
   useEffect(() => console.log(isSubmitting), [isSubmitting]);
@@ -185,7 +194,7 @@ const Checkout = (props) => {
             {orders.map((order, key) => {
               return (
                 <tr key={key}>
-                  <td>{order.order_id}</td>
+                  <td>{order.id}</td>
                   <td>{order.address}</td>
                 </tr>
               );
