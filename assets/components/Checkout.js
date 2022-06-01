@@ -12,6 +12,7 @@ const Checkout = (props) => {
     productName: "",
   });
   const [isSaving, setIsSaving] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const location = useLocation();
   const order = location.state?.data ? location.state.data : "";
 
@@ -56,6 +57,7 @@ const Checkout = (props) => {
         });
         setIsSaving(false);
         setAddress("");
+        setIsSubmitting(true);
       })
       .catch((err) => {
         console.log("Axios error: ", err);
@@ -68,6 +70,11 @@ const Checkout = (props) => {
         setIsSaving(false);
       });
   };
+
+  // Display the history orders immediately after submitting
+  useEffect(() => {
+    fetchOrders();
+  }, [isSubmitting]);
 
   return (
     <div>
