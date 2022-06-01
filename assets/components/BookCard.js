@@ -51,8 +51,8 @@ const BookCard = (props) => {
             })
           )}
         </ul>
-        <p>Date: {publishedDate}</p>
-        <div>
+        <p className="text-muted">Date: {publishedDate}</p>
+        <div className="card-price">
           {price} {currency}
         </div>
       </div>

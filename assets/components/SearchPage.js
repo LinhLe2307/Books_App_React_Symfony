@@ -46,7 +46,7 @@ const SearchPage = () => {
   const handleAvailableData = (res) => {
     // If there are no date, images or title, make default value
     const availableData = res.data.items.map((book) => {
-      return handleIndividualData(book)
+      return handleIndividualData(book);
     });
     return availableData;
   };
@@ -100,7 +100,7 @@ const SearchPage = () => {
 
   return (
     <>
-      <select defaultValue={sort} onChange={handleSort}>
+      <select className="m-2" defaultValue={sort} onChange={handleSort}>
         <option value="" invalid="true" hidden>
           Sort
         </option>
