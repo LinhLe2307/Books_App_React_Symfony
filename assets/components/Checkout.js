@@ -78,8 +78,8 @@ const Checkout = (props) => {
     let formData = new FormData();
     setIsSaving(true);
     const productIds = order.map((product) => product.id);
-    let dataToSend = billInfo;
-    formData.append('billInfo', dataToSend);
+    formData.append('billInfo', billInfo);
+    formData.append('cardInfo', cardInfo);
     formData.append('product_id[]', productIds);
 
     axios
