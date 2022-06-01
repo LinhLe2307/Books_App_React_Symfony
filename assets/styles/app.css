@@ -52,12 +52,17 @@ h2 {
   font-weight: 900;
 }
 
+ul {
+  padding: 0;
+}
+
 li {
   list-style: none;
 }
 
-header a {
+a {
   text-decoration: none;
+  color: black;
   cursor: pointer;
 }
 
