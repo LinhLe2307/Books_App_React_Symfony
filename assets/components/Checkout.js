@@ -71,7 +71,7 @@ const Checkout = (props) => {
       });
   };
 
-  // Display the history orders immediately after submitting
+  // Display the history orders immediately after submitting them
   useEffect(() => {
     fetchOrders();
   }, [isSubmitting]);
