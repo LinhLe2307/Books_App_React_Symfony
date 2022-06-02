@@ -59,44 +59,44 @@ const BillInfo = ({ change }) => {
         </div>
         {/*.............. Apt ...............*/}
         <div className="form-group ">
-          <label htmlFor="apt">Apt, suite, etc.</label>
+          <label htmlFor="aptAddress">Apt, suite, etc.</label>
           <input
             type="text"
             className="form-control"
-            name="apt"
+            name="aptAddress"
             onChange={change}
             required
           ></input>
         </div>
         {/*.............. City ...............*/}
         <div className="form-group ">
-          <label htmlFor="apt">City</label>
+          <label htmlFor="cityAddress">City</label>
           <input
             type="text"
             className="form-control"
-            name="city"
+            name="cityAddress"
             onChange={change}
             required
           ></input>
         </div>
         {/*.............. Country ...............*/}
         <div className="form-group ">
-          <label htmlFor="country">Country</label>
+          <label htmlFor="countryAddress">Country</label>
           <input
             type="text"
             className="form-control"
-            name="country"
+            name="countryAddress"
             onChange={change}
             required
           ></input>
         </div>
         {/*.............. Postal code ...............*/}
         <div className="form-group ">
-          <label htmlFor="zip">Postal code</label>
+          <label htmlFor="zipAddress">Postal code</label>
           <input
             type="text"
             className="form-control"
-            name="zip"
+            name="zipAddress"
             onChange={change}
             required
           ></input>

@@ -92,7 +92,8 @@ const Checkout = (props) => {
     }
 
     //Order
-    formData.append("address", billInfo.streetAddress);
+    let address = `${billInfo.streetAddress}, ${billInfo.cityAddress}, ${billInfo.countryAddress} `;
+    formData.append("address", address);
     formData.append("product_id[]", productIds);
 
     axios
