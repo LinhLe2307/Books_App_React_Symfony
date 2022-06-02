@@ -100,14 +100,17 @@ const SearchPage = () => {
 
   return (
     <>
-      <select className="m-2" defaultValue={sort} onChange={handleSort}>
+      <select
+        className="form-select m-3 form-select-sm mx-auto"
+        defaultValue={sort}
+        onChange={handleSort}
+      >
         <option value="" invalid="true" hidden>
           Sort
         </option>
         <option value="oldest">Oldest</option>
         <option value="newest">Newest</option>
       </select>
-
       <div className="justify-content-center d-flex p-2 flex-wrap">
         {sortedDate.map((book) => {
           return <BookCard key={book.id} {...book} />;

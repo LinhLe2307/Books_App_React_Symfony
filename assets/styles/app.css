@@ -54,6 +54,15 @@ h2 {
   font-weight: 900;
 }
 
+h3 {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+h4 {
+  font-size: 1rem;
+}
+
 ul {
   padding: 0;
 }
@@ -68,11 +77,54 @@ a {
   cursor: pointer;
 }
 
+/*......... Search ........*/
+.form-select-sm {
+  max-width: 50vw;
+}
+
 /*...... Book card .......*/
 
 main .card {
   border: none;
   margin: 1px;
+}
+
+/*...... Book details .......*/
+.book-details h2 {
+  font-weight: 300;
+}
+
+.image-container {
+  position: relative;
+}
+
+.book-details-image {
+  width: 100%;
+}
+
+.mature {
+  font-size: 3rem;
+  position: absolute;
+  top: 0px;
+  left: 85%;
+}
+
+.categories {
+  font-weight: 300;
+  font-size: 0.9rem;
+}
+
+.isbn {
+  font-weight: 500;
+}
+
+.book-description {
+  font-weight: 300;
+}
+
+.book-price {
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 
 /*......... Footer ..........*/
