@@ -77,6 +77,11 @@ a {
   cursor: pointer;
 }
 
+/*......... Search ........*/
+.form-select-sm {
+  max-width: 50vw;
+}
+
 /*...... Book card .......*/
 
 main .card {
