@@ -25,12 +25,14 @@ const Checkout = (props) => {
     lastname: '',
     cardNumber: '',
     cvv: '',
+    validMonth: '',
+    validYear: '',
     saveCard: false,
   });
   const [isSaving, setIsSaving] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const location = useLocation();
-  const order = location.state?.data ? location.state.data : '';
+  const order = location.state?.data ? location.state.data : [];
 
   useEffect(() => {
     fetchOrders();
@@ -77,7 +79,7 @@ const Checkout = (props) => {
   const handlePost = () => {
     let formData = new FormData();
     setIsSaving(true);
-    const productIds = order.map((product) => product.id);
+    const productIds = order?.map((product) => product.id);
     formData.append('billInfo', billInfo);
     formData.append('cardInfo', cardInfo);
     formData.append('product_id[]', productIds);
@@ -92,7 +94,7 @@ const Checkout = (props) => {
           timer: 1500,
         });
         setIsSaving(false);
-        setAddress('');
+        setBillInfo('');
         setIsSubmitting(true);
       })
       .catch((err) => {
@@ -113,77 +115,89 @@ const Checkout = (props) => {
   }, [isSubmitting]);
 
   return (
-    <div>
-      <BillInfo change={(e) => handleInputBilling(e)} />
-      <PaymentCard change={(e) => handleInputCard(e)} />
-      {/*....... Order overview .......*/}
-      <div className="border rounded m-3 p-3">
-        <h3>Your order</h3>
-        {/* Billing details */}
-        <h4></h4>
-        <div>
-          {billInfo.firstname} {billInfo.lastname}
+    <div className="container checkout">
+      <div className="row">
+        <div className="col">
+          <BillInfo change={(e) => handleInputBilling(e)} />
+          <PaymentCard change={(e) => handleInputCard(e)} />
         </div>
-        <div>Email: {billInfo.email}</div>
-        <div>
-          Address: {billInfo.streetAddress} {billInfo.apt}, {billInfo.city},{' '}
-          {billInfo.country}, {billInfo.zip}
-        </div>
-        <div>Phone: {billInfo.phone}</div>
+        <div className="col">
+          {/*....... Order overview .......*/}
+          <div className="order-overview border rounded m-3 p-3">
+            <h3>Your order</h3>
+            {/* Billing details */}
+            <h4></h4>
+            <div>
+              {billInfo.firstname} {billInfo.lastname}
+            </div>
+            <div>Email: {billInfo.email}</div>
+            <div>
+              Address:
+              {/* Conditional rendering for showing commas */}
+              {billInfo.streetAddress == ''
+                ? ' '
+                : ` ${billInfo.streetAddress} ${billInfo.apt}, `}
+              {billInfo.city == '' ? ' ' : `${billInfo.city}, `}
+              {billInfo.country == '' ? ' ' : `${billInfo.country}, `}
+              {billInfo.zip}
+            </div>
+            <div>Phone: {billInfo.phone}</div>
 
-        {/* Products list */}
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">Book ID</th>
-              <th scope="col">Book</th>
-              <th scope="col">Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            {order.map((product, key) => {
-              return (
-                <tr key={key}>
-                  <td>{product.id}</td>
-                  <td>
-                    {product.volumeInfo?.title} -{' '}
-                    {product.volumeInfo?.authors[0]}
-                  </td>
-                  <td>{product.saleInfo?.listPrice?.amount}</td>
+            {/* Products list */}
+            <table className="table">
+              <thead>
+                <tr>
+                  <th scope="col">Book ID</th>
+                  <th scope="col">Book</th>
+                  <th scope="col">Price</th>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        <button
-          disabled={isSaving}
-          className="btn btn-primary"
-          onClick={handlePost}
-        >
-          PLACE ORDER
-        </button>
-      </div>
-      {/*....... Order history .......*/}
-      <div className="border rounded m-3 p-3">
-        <h4>Order history</h4>
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">Order ID</th>
-              <th scope="col">Order info</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map((order, key) => {
-              return (
-                <tr key={key}>
-                  <td>{order.id}</td>
-                  <td>{order.address}</td>
+              </thead>
+              <tbody>
+                {order?.map((product, key) => {
+                  return (
+                    <tr key={key}>
+                      <td>{product.id}</td>
+                      <td>
+                        {product.volumeInfo?.title} -{' '}
+                        {product.volumeInfo?.authors[0]}
+                      </td>
+                      <td>{product.saleInfo?.listPrice?.amount}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+            <button
+              disabled={isSaving}
+              className="btn btn-primary"
+              onClick={handlePost}
+            >
+              PLACE ORDER
+            </button>
+          </div>
+          {/*....... Order history .......*/}
+          <div className="border rounded m-3 p-3">
+            <h4>Order history</h4>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th scope="col">Order ID</th>
+                  <th scope="col">Order info</th>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
+              </thead>
+              <tbody>
+                {orders?.map((order, key) => {
+                  return (
+                    <tr key={key}>
+                      <td>{order.id}</td>
+                      <td>{order.address}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   );

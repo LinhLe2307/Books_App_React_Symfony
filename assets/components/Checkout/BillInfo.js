@@ -4,7 +4,15 @@ const BillInfo = ({ change }) => {
   return (
     <div>
       <h1>Billing details</h1>
-      <form className="border rounded m-3 p-3">
+      <form
+        className="billing form border rounded  p-4"
+        action="#payment-card"
+        onSubmit={(e) => {
+          e.preventDefault();
+          window.scrollTo(0, 800);
+          return false;
+        }}
+      >
         {/*.............. First name ...............*/}
         <div className="form-group ">
           <label htmlFor="firstname">First name</label>
@@ -100,18 +108,30 @@ const BillInfo = ({ change }) => {
             type="tel"
             className="form-control"
             name="phone"
-            pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+            pattern="[0-9]{10,13}"
             onChange={change}
             required
           ></input>
         </div>
         {/*.............. Save info ...............*/}
-        <div className="form-group">
-          <input type="checkbox" name="saveAddress" onChange={change}></input>
-          <label htmlFor="saveAddress">
+        <div className="form-check">
+          <input
+            type="checkbox"
+            name="saveAddress"
+            className="form-check-input"
+            onChange={change}
+          ></input>
+          <label htmlFor="saveAddress" className="form-check-label">
             Save this information for the next time
           </label>
         </div>
+        {/*............. Buttons ...................*/}
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+        <button type="reset" className="btn btn-light p-2 mx-3">
+          Reset
+        </button>
       </form>
     </div>
   );

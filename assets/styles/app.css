@@ -45,6 +45,8 @@ main {
 
 h1 {
   font-family: 'Pacifico', cursive;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 h2 {
@@ -66,11 +68,6 @@ a {
   cursor: pointer;
 }
 
-label {
-  display: block !important;
-  margin-top: 2.5rem;
-}
-
 /*...... Book card .......*/
 
 main .card {
@@ -87,6 +84,28 @@ footer {
 
 footer a {
   color: var(--font-color);
+}
+
+/*......... Contact ........*/
+
+#contact {
+  background-color: rgb(255, 239, 236);
+  padding: 4rem 0 3rem;
+  position: relative;
+  /* top: -0.5rem; */
+}
+
+#contact h2 {
+  font-weight: 300;
+}
+
+#contact label {
+  display: block !important;
+  margin-top: 2.5rem;
+}
+
+#contact .row {
+  --bs-gutter-x: 5rem !important;
 }
 
 .textarea-line,
@@ -110,23 +129,6 @@ footer a {
   /* background: transparent !important; */
   border-bottom: 1px solid #000000;
   outline: none;
-}
-
-.row {
-  --bs-gutter-x: 5rem !important;
-}
-
-/*......... Contact ........*/
-
-#contact {
-  background-color: rgb(255, 239, 236);
-  padding: 4rem 0 3rem;
-  position: relative;
-  /* top: -0.5rem; */
-}
-
-#contact h2 {
-  font-weight: 300;
 }
 
 .material-symbols-outlined {
@@ -163,6 +165,27 @@ footer a {
 
 .card-info {
   font-weight: 300;
+}
+
+/*............... Checkout ....................*/
+
+.checkout {
+  display: flex;
+}
+
+.billing input,
+.payment-card input {
+  background-color: #f5f5f5;
+}
+
+.billing label,
+.payment-card label {
+  padding: 0.5rem 0;
+}
+
+.order-overview {
+  margin-top: 4.8rem !important;
+  min-width: 400px;
 }
 
 /*............. Button scroll up ..........*/
