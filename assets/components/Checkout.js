@@ -21,8 +21,7 @@ const Checkout = (props) => {
     saveAddress: false,
   });
   const [cardInfo, setCardInfo] = useState({
-    firstname: '',
-    lastname: '',
+    name: '',
     cardNumber: '',
     cvv: '',
     validMonth: '',
