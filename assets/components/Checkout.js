@@ -51,28 +51,28 @@ const Checkout = (props) => {
 
   const handleInputBilling = (e) => {
     //Handle checkbox input
-    if (e.target.name == "saveAddress") {
-      setBillInfo({ ...billInfo, [e.target.name]: [e.target.checked] });
-    } else {
-      //Handle other input
-      setBillInfo({
-        ...billInfo,
-        [e.target.name]: [e.target.value],
-      });
-    }
+    // if (e.target.name == "saveAddress") {
+    //   setBillInfo({ ...billInfo, [e.target.name]: [e.target.checked] });
+    // } else {
+    //Handle other input
+    setBillInfo({
+      ...billInfo,
+      [e.target.name]: [e.target.value],
+    });
+    // }
   };
 
   const handleInputCard = (e) => {
     //Handle checkbox input
-    if (e.target.name == "saveAddress") {
-      setCardInfo({ ...cardInfo, [e.target.name]: [e.target.checked] });
-    } else {
-      //Handle other input
-      setCardInfo({
-        ...cardInfo,
-        [e.target.name]: [e.target.value],
-      });
-    }
+    // if (e.target.name == "saveAddress") {
+    //   setCardInfo({ ...cardInfo, [e.target.name]: [e.target.checked] });
+    // } else {
+    //Handle other input
+    setCardInfo({
+      ...cardInfo,
+      [e.target.name]: [e.target.value],
+    });
+    // }
     console.log(cardInfo);
   };
 
@@ -81,34 +81,41 @@ const Checkout = (props) => {
     setIsSaving(true);
     const productIds = order.map((product) => product.id);
 
-    for (const [key, value] of Object.entries(billInfo)) {
-      formData.append(key, value);
-    }
-    for (const [key, value] of Object.entries(cardInfo)) {
-      formData.append(key, value);
-    }
+    console.log(billInfo);
+    console.log(cardInfo);
+
+    // for (let [key, value] of Object.entries(billInfo)) {
+    //   formData.append(`${key}`, value[0]);
+    //   console.log(`${key}`, value[0]);
+    // }
+    // for (let [key, value] of Object.entries(cardInfo)) {
+    //   formData.append(`${key}`, value[0]);
+    //   console.log(`${key}`, value[0]);
+    // }
 
     // User
-    // formData.append("firstname", billInfo.firstname);
-    // formData.append("lastname", billInfo.lastname);
-    // formData.append("email", billInfo.email);
-    // formData.append("phone", billInfo.phone);
+    formData.append("firstname", billInfo.firstname);
+    formData.append("lastname", billInfo.lastname);
+    formData.append("email", billInfo.email);
+    formData.append("phone", billInfo.phone);
 
     // //Address
-    // formData.append("streetAddress", billInfo.streetAddress);
-    // formData.append("aptAddress", billInfo.aptAddress);
-    // formData.append("cityAddress", billInfo.cityAddress);
-    // formData.append("countryAddress", billInfo.countryAddress);
-    // formData.append("zipAddress", billInfo.zipAddress);
+    formData.append("streetAddress", billInfo.streetAddress);
+    formData.append("aptAddress", billInfo.aptAddress);
+    formData.append("cityAddress", billInfo.cityAddress);
+    formData.append("countryAddress", billInfo.countryAddress);
+    formData.append("zipAddress", billInfo.zipAddress);
+    formData.append("saveAddress", billInfo.saveAddress);
 
     // //Payment Card
-    // formData.append("cardNumber", cardInfo.cardNumber);
-    // formData.append("cvv", cardInfo.cvv);
-    // formData.append("validMonth", cardInfo.validMonth);
-    // formData.append("nameCard", cardInfo.nameCard);
+    formData.append("cardNumber", cardInfo.cardNumber);
+    formData.append("cvv", cardInfo.cvv);
+    formData.append("validMonth", cardInfo.validMonth);
+    formData.append("nameCard", cardInfo.nameCard);
+    formData.append("saveCard", cardInfo.saveCard);
 
     // //Order
-    // formData.append("address", billInfo.streetAddress);
+    formData.append("address", billInfo.streetAddress);
     formData.append("product_id[]", productIds);
 
     axios

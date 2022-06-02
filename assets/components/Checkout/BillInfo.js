@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const BillInfo = ({ change }) => {
   return (
@@ -7,7 +7,7 @@ const BillInfo = ({ change }) => {
       <form className="border rounded m-3 p-3">
         {/*.............. First name ...............*/}
         <div className="form-group ">
-          <label htmlFor="firstname">First name</label>
+          <label htmlFor="nameCard">First name</label>
           <input
             type="text"
             className="form-control"
@@ -18,7 +18,7 @@ const BillInfo = ({ change }) => {
         </div>
         {/*.............. Last name ...............*/}
         <div className="form-group">
-          <label htmlFor="lastname">Last name</label>
+          <label htmlFor="lastname">Last Name</label>
           <input
             type="text"
             className="form-control"
