@@ -32,7 +32,7 @@ const Checkout = (props) => {
   const [isSaving, setIsSaving] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const location = useLocation();
-  const order = location.state?.data ? location.state.data : '';
+  const order = location.state?.data ? location.state.data : [];
 
   useEffect(() => {
     fetchOrders();
