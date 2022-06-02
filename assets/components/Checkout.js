@@ -12,27 +12,27 @@ const Checkout = (props) => {
     firstname: "",
     lastname: "",
     email: "",
+    phone: "",
+    // Address
     streetAddress: "",
     aptAddress: "",
     cityAddress: "",
     countryAddress: "",
     zipAddress: "",
-    phone: "",
     saveAddress: false,
   });
   const [cardInfo, setCardInfo] = useState({
-    // firstname: "",
-    // lastname: "",
-    nameCard: "",
+    name: "",
     cardNumber: "",
-    validMonth: "",
     cvv: "",
+    validMonth: "",
+    validYear: "",
     saveCard: false,
   });
   const [isSaving, setIsSaving] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const location = useLocation();
-  const order = location.state?.data ? location.state.data : "";
+  const order = location.state?.data ? location.state.data : [];
 
   useEffect(() => {
     fetchOrders();
@@ -51,29 +51,30 @@ const Checkout = (props) => {
 
   const handleInputBilling = (e) => {
     //Handle checkbox input
-    // if (e.target.name == "saveAddress") {
-    //   setBillInfo({ ...billInfo, [e.target.name]: [e.target.checked] });
-    // } else {
-    //Handle other input
-    setBillInfo({
-      ...billInfo,
-      [e.target.name]: [e.target.value],
-    });
-    // }
+    if (e.target.name == "saveAddress") {
+      setBillInfo({ ...billInfo, [e.target.name]: [e.target.checked] });
+    } else {
+      //Handle other input
+      setBillInfo({
+        ...billInfo,
+        [e.target.name]: [e.target.value],
+      });
+    }
+    // console.log(billInfo);
   };
 
   const handleInputCard = (e) => {
     //Handle checkbox input
-    // if (e.target.name == "saveAddress") {
-    //   setCardInfo({ ...cardInfo, [e.target.name]: [e.target.checked] });
-    // } else {
-    //Handle other input
-    setCardInfo({
-      ...cardInfo,
-      [e.target.name]: [e.target.value],
-    });
-    // }
-    console.log(cardInfo);
+    if (e.target.name == "saveCard") {
+      setCardInfo({ ...cardInfo, [e.target.name]: [e.target.checked] });
+    } else {
+      //Handle other input
+      setCardInfo({
+        ...cardInfo,
+        [e.target.name]: [e.target.value],
+      });
+    }
+    // console.log(cardInfo);
   };
 
   const handlePost = () => {
@@ -81,40 +82,16 @@ const Checkout = (props) => {
     setIsSaving(true);
     const productIds = order.map((product) => product.id);
 
-    console.log(billInfo);
-    console.log(cardInfo);
+    for (let [key, value] of Object.entries(billInfo)) {
+      formData.append(`${key}`, `${value}`);
+      console.log(`${key}`, `${value}`);
+    }
+    for (let [key, value] of Object.entries(cardInfo)) {
+      formData.append(`${key}`, `${value}`);
+      console.log(`${key}`, `${value}`);
+    }
 
-    // for (let [key, value] of Object.entries(billInfo)) {
-    //   formData.append(`${key}`, value[0]);
-    //   console.log(`${key}`, value[0]);
-    // }
-    // for (let [key, value] of Object.entries(cardInfo)) {
-    //   formData.append(`${key}`, value[0]);
-    //   console.log(`${key}`, value[0]);
-    // }
-
-    // User
-    formData.append("firstname", billInfo.firstname);
-    formData.append("lastname", billInfo.lastname);
-    formData.append("email", billInfo.email);
-    formData.append("phone", billInfo.phone);
-
-    // //Address
-    formData.append("streetAddress", billInfo.streetAddress);
-    formData.append("aptAddress", billInfo.aptAddress);
-    formData.append("cityAddress", billInfo.cityAddress);
-    formData.append("countryAddress", billInfo.countryAddress);
-    formData.append("zipAddress", billInfo.zipAddress);
-    formData.append("saveAddress", billInfo.saveAddress);
-
-    // //Payment Card
-    formData.append("cardNumber", cardInfo.cardNumber);
-    formData.append("cvv", cardInfo.cvv);
-    formData.append("validMonth", cardInfo.validMonth);
-    formData.append("nameCard", cardInfo.nameCard);
-    formData.append("saveCard", cardInfo.saveCard);
-
-    // //Order
+    //Order
     formData.append("address", billInfo.streetAddress);
     formData.append("product_id[]", productIds);
 
@@ -128,10 +105,11 @@ const Checkout = (props) => {
           timer: 1500,
         });
         setIsSaving(false);
+        setBillInfo("");
         setIsSubmitting(true);
       })
       .catch((err) => {
-        console.log("Axios error: ", err.request.data);
+        console.log("Axios error: ", err.response.data);
         Swal.fire({
           icon: "error",
           title: "An error occured",
@@ -148,78 +126,91 @@ const Checkout = (props) => {
   }, [isSubmitting]);
 
   return (
-    <div>
-      <BillInfo change={(e) => handleInputBilling(e)} />
-      <PaymentCard change={(e) => handleInputCard(e)} />
-      {/*....... Order overview .......*/}
-      <div className="border rounded m-3 p-3">
-        <h3>Your order</h3>
-        {/* Billing details */}
-        <h4></h4>
-        <div>
-          {billInfo.firstname} {billInfo.lastname}
+    <div className="container checkout">
+      <div className="row">
+        <div className="col">
+          <BillInfo change={(e) => handleInputBilling(e)} />
+          <PaymentCard change={(e) => handleInputCard(e)} />
         </div>
-        <div>Email: {billInfo.email}</div>
-        <div>
-          Address: {billInfo.streetAddress} {billInfo.aptAddress},{" "}
-          {billInfo.cityAddress}, {billInfo.countryAddress},{" "}
-          {billInfo.zipAddress}
-        </div>
-        <div>Phone: {billInfo.phone}</div>
+        <div className="col">
+          {/*....... Order overview .......*/}
+          <div className="order-overview border rounded m-3 p-3">
+            <h3>Your order</h3>
+            {/* Billing details */}
+            <h4></h4>
+            <div>
+              {billInfo.firstname} {billInfo.lastname}
+            </div>
+            <div>Email: {billInfo.email}</div>
+            <div>
+              Address:
+              {/* Conditional rendering for showing commas */}
+              {billInfo.streetAddress == ""
+                ? " "
+                : ` ${billInfo.streetAddress} ${billInfo.aptAddress}, `}
+              {billInfo.cityAddress == "" ? " " : `${billInfo.cityAddress}, `}
+              {billInfo.countryAddress == ""
+                ? " "
+                : `${billInfo.countryAddress}, `}
+              {billInfo.zipAddress}
+            </div>
+            <div>Phone: {billInfo.phone}</div>
 
-        {/* Products list */}
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">Book ID</th>
-              <th scope="col">Book</th>
-              <th scope="col">Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            {order.map((product, key) => {
-              return (
-                <tr key={key}>
-                  <td>{product.id}</td>
-                  <td>
-                    {product.volumeInfo?.title} -{" "}
-                    {product.volumeInfo?.authors[0]}
-                  </td>
-                  <td>{product.saleInfo?.listPrice?.amount}</td>
+            {/* Products list */}
+            <table className="table">
+              <thead>
+                <tr>
+                  <th scope="col">Book ID</th>
+                  <th scope="col">Book</th>
+                  <th scope="col">Price</th>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        <button
-          disabled={isSaving}
-          className="btn btn-primary"
-          onClick={handlePost}
-        >
-          PLACE ORDER
-        </button>
-      </div>
-      {/*....... Order history .......*/}
-      <div className="border rounded m-3 p-3">
-        <h4>Order history</h4>
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">Order ID</th>
-              <th scope="col">Order info</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map((order, key) => {
-              return (
-                <tr key={key}>
-                  <td>{order.id}</td>
-                  <td>{order.address}</td>
+              </thead>
+              <tbody>
+                {order?.map((product, key) => {
+                  return (
+                    <tr key={key}>
+                      <td>{product.id}</td>
+                      <td>
+                        {product.volumeInfo?.title} -{" "}
+                        {product.volumeInfo?.authors[0]}
+                      </td>
+                      <td>{product.saleInfo?.listPrice?.amount}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+            <button
+              disabled={isSaving}
+              className="btn btn-primary"
+              onClick={handlePost}
+            >
+              PLACE ORDER
+            </button>
+          </div>
+          {/*....... Order history .......*/}
+          <div className="border rounded m-3 p-3">
+            <h4>Order history</h4>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th scope="col">Order ID</th>
+                  <th scope="col">Order info</th>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
+              </thead>
+              <tbody>
+                {orders?.map((order, key) => {
+                  return (
+                    <tr key={key}>
+                      <td>{order.id}</td>
+                      <td>{order.address}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   );
