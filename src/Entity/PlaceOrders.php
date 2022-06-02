@@ -19,7 +19,7 @@ class PlaceOrders
     #[ORM\JoinColumn(nullable: false)]
     private $userId;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'text', nullable: true)]
     private $address;
 
     #[ORM\OneToMany(mappedBy: 'orderId', targetEntity: OrderHasBooks::class)]
@@ -52,7 +52,7 @@ class PlaceOrders
         return $this->address;
     }
 
-    public function setAddress(string $address): self
+    public function setAddress(?string $address): self
     {
         $this->address = $address;
 

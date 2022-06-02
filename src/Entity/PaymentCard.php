@@ -15,17 +15,20 @@ class PaymentCard
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $nameCard;
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
+    private $name;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $cardNumber;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $cvv;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $validMonth;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $cvv;
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private $validYear;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
     private $saveCard;
@@ -43,38 +46,26 @@ class PaymentCard
         return $this->id;
     }
 
-    public function getNameCard(): ?string
+    public function getName(): ?string
     {
-        return $this->nameCard;
+        return $this->name;
     }
 
-    public function setNameCard(string $nameCard): self
+    public function setName(?string $name): self
     {
-        $this->nameCard = $nameCard;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getCardNumber(): ?int
+    public function getCardNumber(): ?string
     {
         return $this->cardNumber;
     }
 
-    public function setCardNumber(int $cardNumber): self
+    public function setCardNumber(?string $cardNumber): self
     {
         $this->cardNumber = $cardNumber;
-
-        return $this;
-    }
-
-    public function getValidMonth(): ?string
-    {
-        return $this->validMonth;
-    }
-
-    public function setValidMonth(string $validMonth): self
-    {
-        $this->validMonth = $validMonth;
 
         return $this;
     }
@@ -84,9 +75,33 @@ class PaymentCard
         return $this->cvv;
     }
 
-    public function setCvv(string $cvv): self
+    public function setCvv(?string $cvv): self
     {
         $this->cvv = $cvv;
+
+        return $this;
+    }
+
+    public function getValidMonth(): ?int
+    {
+        return $this->validMonth;
+    }
+
+    public function setValidMonth(?int $validMonth): self
+    {
+        $this->validMonth = $validMonth;
+
+        return $this;
+    }
+
+    public function getValidYear(): ?int
+    {
+        return $this->validYear;
+    }
+
+    public function setValidYear(?int $validYear): self
+    {
+        $this->validYear = $validYear;
 
         return $this;
     }

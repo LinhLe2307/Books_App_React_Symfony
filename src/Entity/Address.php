@@ -15,22 +15,22 @@ class Address
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 500)]
+    #[ORM\Column(type: 'string', length: 500, nullable: true)]
     private $streetAddress;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 10, nullable: true)]
     private $aptAddress;
 
-    #[ORM\Column(type: 'string', length: 80)]
+    #[ORM\Column(type: 'string', length: 80, nullable: true)]
     private $cityAddress;
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
     private $countryAddress;
 
-    #[ORM\Column(type: 'string', length: 12)]
+    #[ORM\Column(type: 'string', length: 12, nullable: true)]
     private $zipAddress;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $saveAddress;
 
     #[ORM\ManyToMany(targetEntity: Users::class, mappedBy: 'addressId')]
@@ -51,7 +51,7 @@ class Address
         return $this->streetAddress;
     }
 
-    public function setStreetAddress(string $streetAddress): self
+    public function setStreetAddress(?string $streetAddress): self
     {
         $this->streetAddress = $streetAddress;
 
@@ -75,7 +75,7 @@ class Address
         return $this->cityAddress;
     }
 
-    public function setCityAddress(string $cityAddress): self
+    public function setCityAddress(?string $cityAddress): self
     {
         $this->cityAddress = $cityAddress;
 
@@ -87,7 +87,7 @@ class Address
         return $this->countryAddress;
     }
 
-    public function setCountryAddress(string $countryAddress): self
+    public function setCountryAddress(?string $countryAddress): self
     {
         $this->countryAddress = $countryAddress;
 
@@ -99,7 +99,7 @@ class Address
         return $this->zipAddress;
     }
 
-    public function setZipAddress(string $zipAddress): self
+    public function setZipAddress(?string $zipAddress): self
     {
         $this->zipAddress = $zipAddress;
 
@@ -111,7 +111,7 @@ class Address
         return $this->saveAddress;
     }
 
-    public function setSaveAddress(bool $saveAddress): self
+    public function setSaveAddress(?bool $saveAddress): self
     {
         $this->saveAddress = $saveAddress;
 

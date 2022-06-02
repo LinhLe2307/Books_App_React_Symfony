@@ -32,7 +32,7 @@ class MainController extends AbstractController
         foreach($orders as $order){
             $data[] = [
                 'id' => $order->getId(),
-                'user_id' => $order->getUserId(),
+                'userId' => $order->getUserId(),
                 'address' => $order->getAddress(),
             ];
         }
@@ -43,37 +43,45 @@ class MainController extends AbstractController
     public function placeOrder(Request $request, ManagerRegistry $doctrine): Response
     {
         $em = $doctrine->getManager();
-        
         $address = new Address();
         $order = new PlaceOrders();
         $user = new Users();
         $paymentCard = new PaymentCard();
+        
+         // Users 
+         $user->setFirstname($request->request->get('firstname'));
+         $user->setLastname($request->request->get('lastname'));
+         $user->setEmail($request->request->get('email'));
+         $user->setPhone($request->request->get('phone'));
 
         // Address
-        $address->setStreetAddress($request->request->get('streetAddress'));
-        $address->setAptAddress($request->request->get('aptAddress'));
-        $address->setCityAddress($request->request->get('cityAddress'));
-        $address->setCountryAddress($request->request->get('countryAddress'));
-        $address->setZipAddress($request->request->get('zipAddress'));
-        $address->setSaveAddress($request->request->get('saveAddress'));
+        $savingAddress = $request->request->get('saveAddress');
+        if($savingAddress === "true"){
+            $address->setStreetAddress($request->request->get('streetAddress'));
+            $address->setAptAddress($request->request->get('aptAddress'));
+            $address->setCityAddress($request->request->get('cityAddress'));
+            $address->setCountryAddress($request->request->get('countryAddress'));
+            $address->setZipAddress($request->request->get('zipAddress'));
+            $address->setSaveAddress($request->request->get('saveAddress'));
+            $address->addUserId($user);
+            $user->addAddressId($address); 
+            $em->persist($address);
 
+        } 
         // Payment Card
-        $paymentCard->setCardNumber($request->request->get('cardNumber'));
-        $paymentCard->setCvv($request->request->get('cvv'));
-        $paymentCard->setValidMonth($request->request->get('validMonth'));
-        $paymentCard->setNameCard($request->request->get('nameCard'));
-        $paymentCard->setSaveCard($request->request->get('saveCard'));
-
-        // Users 
-        $user->setFirstname($request->request->get('firstname'));
-        $user->setLastname($request->request->get('lastname'));
-        $user->setEmail($request->request->get('email'));
-        $user->setPhone($request->request->get('phone'));
-        $user->setPhone($request->request->get('phone'));
-        $user->addAddressId($address);
-        $user->addCardId($paymentCard);
-
-        
+        $savingCard = $request->request->get('saveCard');
+        if($savingCard === "true") {
+            $paymentCard->setCardNumber($request->request->get('cardNumber'));
+            $paymentCard->setCvv($request->request->get('cvv'));
+            $paymentCard->setValidMonth($request->request->get('validMonth'));
+            $paymentCard->setValidYear($request->request->get('validYear'));
+            $paymentCard->setName($request->request->get('name'));
+            $paymentCard->setSaveCard($request->request->get('saveCard'));
+            $paymentCard->addUserId($user);
+            $user->addCardId($paymentCard);
+            $em->persist($paymentCard);
+            
+        } 
         $order->setAddress($request->request->get('address'));
         $order->setUserId($user);
         
@@ -88,10 +96,9 @@ class MainController extends AbstractController
             $books->setProductId($key);
             $em->persist($books);
         }
-        $em->persist($address);
         $em->persist($order);
         $em->persist($user);
-        $em->persist($paymentCard);
+
         
         $em->flush();
         return $this->json('Placed order successfully');
