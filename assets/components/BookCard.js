@@ -29,7 +29,9 @@ const BookCard = (props) => {
   return (
     <div className="card" style={{ width: '15rem' }}>
       {/* This is for taking the image */}
-      <img src={bookImage} alt={bookTitle} className="card-img-top" />
+      <Link to={`${id}/${titleFormat}`}>
+        <img src={bookImage} alt={bookTitle} className="card-img-top" />
+      </Link>
 
       <div className="card-body">
         {/* Send the book id and title to BookDetails as :id/:title to display it in URL and retrieve id by useParams().id to fetch data*/}
