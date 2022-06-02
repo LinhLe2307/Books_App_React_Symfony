@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const PaymentCard = ({ change }) => {
   return (
@@ -7,22 +7,22 @@ const PaymentCard = ({ change }) => {
       <form className="border rounded m-3 p-3">
         {/*.............. First name...............*/}
         <div className="form-group ">
-          <label htmlFor="firstname">First name</label>
+          <label htmlFor="nameCard">Name Card</label>
           <input
             type="text"
             className="form-control"
-            name="firstname"
+            name="nameCard"
             onChange={change}
             required
           ></input>
         </div>
         {/*.............. Last name...............*/}
         <div className="form-group ">
-          <label htmlFor="lastname">First name</label>
+          <label htmlFor="validMonth">valid month</label>
           <input
             type="text"
             className="form-control"
-            name="lastname"
+            name="validMonth"
             onChange={change}
             required
           ></input>

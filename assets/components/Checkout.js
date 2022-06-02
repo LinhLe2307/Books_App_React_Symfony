@@ -1,36 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import Swal from 'sweetalert2';
-import axios from '../../../web/node_modules/axios';
-import { useLocation } from '../../../web/node_modules/react-router-dom';
+import React, { useState, useEffect } from "react";
+import Swal from "sweetalert2";
+import axios from "../../../web/node_modules/axios";
+import { useLocation } from "../../../web/node_modules/react-router-dom";
 
-import BillInfo from './Checkout/BillInfo';
-import PaymentCard from './Checkout/PaymentCard';
+import BillInfo from "./Checkout/BillInfo";
+import PaymentCard from "./Checkout/PaymentCard";
 
 const Checkout = (props) => {
   const [orders, setOrders] = useState([]);
   const [billInfo, setBillInfo] = useState({
-    firstname: '',
-    lastname: '',
-    email: '',
-    streetAddress: '',
-    apt: '',
-    city: '',
-    country: '',
-    zip: '',
-    phone: '',
+    firstname: "",
+    lastname: "",
+    email: "",
+    streetAddress: "",
+    aptAddress: "",
+    cityAddress: "",
+    countryAddress: "",
+    zipAddress: "",
+    phone: "",
     saveAddress: false,
   });
   const [cardInfo, setCardInfo] = useState({
-    firstname: '',
-    lastname: '',
-    cardNumber: '',
-    cvv: '',
+    // firstname: "",
+    // lastname: "",
+    nameCard: "",
+    cardNumber: "",
+    validMonth: "",
+    cvv: "",
     saveCard: false,
   });
   const [isSaving, setIsSaving] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const location = useLocation();
-  const order = location.state?.data ? location.state.data : '';
+  const order = location.state?.data ? location.state.data : "";
 
   useEffect(() => {
     fetchOrders();
@@ -38,18 +40,18 @@ const Checkout = (props) => {
 
   const fetchOrders = () => {
     axios
-      .get('/api/checkout')
+      .get("/api/checkout")
       .then((res) => {
         setOrders(res.data);
       })
       .catch((err) => {
-        console.log('Axios error: ', err);
+        console.log("Axios error: ", err);
       });
   };
 
   const handleInputBilling = (e) => {
     //Handle checkbox input
-    if (e.target.name == 'saveAddress') {
+    if (e.target.name == "saveAddress") {
       setBillInfo({ ...billInfo, [e.target.name]: [e.target.checked] });
     } else {
       //Handle other input
@@ -62,7 +64,7 @@ const Checkout = (props) => {
 
   const handleInputCard = (e) => {
     //Handle checkbox input
-    if (e.target.name == 'saveAddress') {
+    if (e.target.name == "saveAddress") {
       setCardInfo({ ...cardInfo, [e.target.name]: [e.target.checked] });
     } else {
       //Handle other input
@@ -78,28 +80,54 @@ const Checkout = (props) => {
     let formData = new FormData();
     setIsSaving(true);
     const productIds = order.map((product) => product.id);
-    formData.append('billInfo', billInfo);
-    formData.append('cardInfo', cardInfo);
-    formData.append('product_id[]', productIds);
+
+    for (const [key, value] of Object.entries(billInfo)) {
+      formData.append(key, value);
+    }
+    for (const [key, value] of Object.entries(cardInfo)) {
+      formData.append(key, value);
+    }
+
+    // User
+    // formData.append("firstname", billInfo.firstname);
+    // formData.append("lastname", billInfo.lastname);
+    // formData.append("email", billInfo.email);
+    // formData.append("phone", billInfo.phone);
+
+    // //Address
+    // formData.append("streetAddress", billInfo.streetAddress);
+    // formData.append("aptAddress", billInfo.aptAddress);
+    // formData.append("cityAddress", billInfo.cityAddress);
+    // formData.append("countryAddress", billInfo.countryAddress);
+    // formData.append("zipAddress", billInfo.zipAddress);
+
+    // //Payment Card
+    // formData.append("cardNumber", cardInfo.cardNumber);
+    // formData.append("cvv", cardInfo.cvv);
+    // formData.append("validMonth", cardInfo.validMonth);
+    // formData.append("nameCard", cardInfo.nameCard);
+
+    // //Order
+    // formData.append("address", billInfo.streetAddress);
+    formData.append("product_id[]", productIds);
 
     axios
-      .post('/api/checkout', formData)
+      .post("/api/checkout", formData)
       .then((res) => {
         Swal.fire({
-          icon: 'success',
-          title: 'Order placed successfully',
+          icon: "success",
+          title: "Order placed successfully",
           showConfirmButton: false,
           timer: 1500,
         });
         setIsSaving(false);
-        setAddress('');
         setIsSubmitting(true);
       })
       .catch((err) => {
-        console.log('Axios error: ', err);
+        console.log("Axios error: ", err.request.data);
         Swal.fire({
-          icon: 'error',
-          title: 'An error occured',
+          icon: "error",
+          title: "An error occured",
           showConfirmButton: false,
           timer: 1500,
         });
@@ -126,8 +154,9 @@ const Checkout = (props) => {
         </div>
         <div>Email: {billInfo.email}</div>
         <div>
-          Address: {billInfo.streetAddress} {billInfo.apt}, {billInfo.city},{' '}
-          {billInfo.country}, {billInfo.zip}
+          Address: {billInfo.streetAddress} {billInfo.aptAddress},{" "}
+          {billInfo.cityAddress}, {billInfo.countryAddress},{" "}
+          {billInfo.zipAddress}
         </div>
         <div>Phone: {billInfo.phone}</div>
 
@@ -146,7 +175,7 @@ const Checkout = (props) => {
                 <tr key={key}>
                   <td>{product.id}</td>
                   <td>
-                    {product.volumeInfo?.title} -{' '}
+                    {product.volumeInfo?.title} -{" "}
                     {product.volumeInfo?.authors[0]}
                   </td>
                   <td>{product.saleInfo?.listPrice?.amount}</td>
