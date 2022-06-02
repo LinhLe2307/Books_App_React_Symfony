@@ -14,10 +14,10 @@ const PaymentCard = ({ change }) => {
           return false;
         }}
       >
-        <div className="row">
-          <div className="col">
-            {/*.............. First name...............*/}
-            <div className="form-group ">
+        {/* <div className="row">
+          <div className="col"> */}
+        {/*.............. First name...............*/}
+        {/* <div className="form-group ">
               <label htmlFor="firstname">First name</label>
               <input
                 type="text"
@@ -28,9 +28,9 @@ const PaymentCard = ({ change }) => {
               ></input>
             </div>
           </div>
-          <div className="col">
-            {/*.............. Last name...............*/}
-            <div className="form-group ">
+          <div className="col"> */}
+        {/*.............. Last name...............*/}
+        {/* <div className="form-group ">
               <label htmlFor="lastname">Last name</label>
               <input
                 type="text"
@@ -40,6 +40,19 @@ const PaymentCard = ({ change }) => {
                 required
               ></input>
             </div>
+          </div> */}
+        {/* </div> */}
+        <div className="">
+          {/*.............. Name...............*/}
+          <div className="form-group ">
+            <label htmlFor="name">Name</label>
+            <input
+              type="text"
+              className="form-control"
+              name="name"
+              onChange={change}
+              required
+            ></input>
           </div>
         </div>
         <div className="row">

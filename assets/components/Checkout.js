@@ -1,32 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import Swal from 'sweetalert2';
-import axios from '../../../web/node_modules/axios';
-import { useLocation } from '../../../web/node_modules/react-router-dom';
+import React, { useState, useEffect } from "react";
+import Swal from "sweetalert2";
+import axios from "../../../web/node_modules/axios";
+import { useLocation } from "../../../web/node_modules/react-router-dom";
 
-import BillInfo from './Checkout/BillInfo';
-import PaymentCard from './Checkout/PaymentCard';
+import BillInfo from "./Checkout/BillInfo";
+import PaymentCard from "./Checkout/PaymentCard";
 
 const Checkout = (props) => {
   const [orders, setOrders] = useState([]);
   const [billInfo, setBillInfo] = useState({
-    firstname: '',
-    lastname: '',
-    email: '',
-    streetAddress: '',
-    apt: '',
-    city: '',
-    country: '',
-    zip: '',
-    phone: '',
+    firstname: "",
+    lastname: "",
+    email: "",
+    phone: "",
+    // Address
+    streetAddress: "",
+    aptAddress: "",
+    cityAddress: "",
+    countryAddress: "",
+    zipAddress: "",
     saveAddress: false,
   });
   const [cardInfo, setCardInfo] = useState({
-    firstname: '',
-    lastname: '',
-    cardNumber: '',
-    cvv: '',
-    validMonth: '',
-    validYear: '',
+    name: "",
+    cardNumber: "",
+    cvv: "",
+    validMonth: "",
+    validYear: "",
     saveCard: false,
   });
   const [isSaving, setIsSaving] = useState(false);
@@ -40,18 +40,18 @@ const Checkout = (props) => {
 
   const fetchOrders = () => {
     axios
-      .get('/api/checkout')
+      .get("/api/checkout")
       .then((res) => {
         setOrders(res.data);
       })
       .catch((err) => {
-        console.log('Axios error: ', err);
+        console.log("Axios error: ", err);
       });
   };
 
   const handleInputBilling = (e) => {
     //Handle checkbox input
-    if (e.target.name == 'saveAddress') {
+    if (e.target.name == "saveAddress") {
       setBillInfo({ ...billInfo, [e.target.name]: [e.target.checked] });
     } else {
       //Handle other input
@@ -60,11 +60,12 @@ const Checkout = (props) => {
         [e.target.name]: [e.target.value],
       });
     }
+    // console.log(billInfo);
   };
 
   const handleInputCard = (e) => {
     //Handle checkbox input
-    if (e.target.name == 'saveAddress') {
+    if (e.target.name == "saveCard") {
       setCardInfo({ ...cardInfo, [e.target.name]: [e.target.checked] });
     } else {
       //Handle other input
@@ -73,35 +74,45 @@ const Checkout = (props) => {
         [e.target.name]: [e.target.value],
       });
     }
-    console.log(cardInfo);
+    // console.log(cardInfo);
   };
 
   const handlePost = () => {
     let formData = new FormData();
     setIsSaving(true);
-    const productIds = order?.map((product) => product.id);
-    formData.append('billInfo', billInfo);
-    formData.append('cardInfo', cardInfo);
-    formData.append('product_id[]', productIds);
+    const productIds = order.map((product) => product.id);
+
+    for (let [key, value] of Object.entries(billInfo)) {
+      formData.append(`${key}`, `${value}`);
+      console.log(`${key}`, `${value}`);
+    }
+    for (let [key, value] of Object.entries(cardInfo)) {
+      formData.append(`${key}`, `${value}`);
+      console.log(`${key}`, `${value}`);
+    }
+
+    //Order
+    formData.append("address", billInfo.streetAddress);
+    formData.append("product_id[]", productIds);
 
     axios
-      .post('/api/checkout', formData)
+      .post("/api/checkout", formData)
       .then((res) => {
         Swal.fire({
-          icon: 'success',
-          title: 'Order placed successfully',
+          icon: "success",
+          title: "Order placed successfully",
           showConfirmButton: false,
           timer: 1500,
         });
         setIsSaving(false);
-        setBillInfo('');
+        setBillInfo("");
         setIsSubmitting(true);
       })
       .catch((err) => {
-        console.log('Axios error: ', err);
+        console.log("Axios error: ", err.response.data);
         Swal.fire({
-          icon: 'error',
-          title: 'An error occured',
+          icon: "error",
+          title: "An error occured",
           showConfirmButton: false,
           timer: 1500,
         });
@@ -134,12 +145,14 @@ const Checkout = (props) => {
             <div>
               Address:
               {/* Conditional rendering for showing commas */}
-              {billInfo.streetAddress == ''
-                ? ' '
-                : ` ${billInfo.streetAddress} ${billInfo.apt}, `}
-              {billInfo.city == '' ? ' ' : `${billInfo.city}, `}
-              {billInfo.country == '' ? ' ' : `${billInfo.country}, `}
-              {billInfo.zip}
+              {billInfo.streetAddress == ""
+                ? " "
+                : ` ${billInfo.streetAddress} ${billInfo.aptAddress}, `}
+              {billInfo.cityAddress == "" ? " " : `${billInfo.cityAddress}, `}
+              {billInfo.countryAddress == ""
+                ? " "
+                : `${billInfo.countryAddress}, `}
+              {billInfo.zipAddress}
             </div>
             <div>Phone: {billInfo.phone}</div>
 
@@ -158,7 +171,7 @@ const Checkout = (props) => {
                     <tr key={key}>
                       <td>{product.id}</td>
                       <td>
-                        {product.volumeInfo?.title} -{' '}
+                        {product.volumeInfo?.title} -{" "}
                         {product.volumeInfo?.authors[0]}
                       </td>
                       <td>{product.saleInfo?.listPrice?.amount}</td>

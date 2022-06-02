@@ -13,12 +13,12 @@ class OrderHasBooks
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: PlaceOrders::class, inversedBy: 'booksIds')]
+    #[ORM\ManyToOne(targetEntity: PlaceOrders::class, inversedBy: 'bookId')]
     #[ORM\JoinColumn(nullable: false)]
-    private $order_id;
+    private $orderId;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $product_id;
+    #[ORM\Column(type: 'string', length: 50)]
+    private $productId;
 
     public function getId(): ?int
     {
@@ -27,24 +27,24 @@ class OrderHasBooks
 
     public function getOrderId(): ?PlaceOrders
     {
-        return $this->order_id;
+        return $this->orderId;
     }
 
-    public function setOrderId(?PlaceOrders $order_id): self
+    public function setOrderId(?PlaceOrders $orderId): self
     {
-        $this->order_id = $order_id;
+        $this->orderId = $orderId;
 
         return $this;
     }
 
     public function getProductId(): ?string
     {
-        return $this->product_id;
+        return $this->productId;
     }
 
-    public function setProductId(string $product_id): self
+    public function setProductId(string $productId): self
     {
-        $this->product_id = $product_id;
+        $this->productId = $productId;
 
         return $this;
     }

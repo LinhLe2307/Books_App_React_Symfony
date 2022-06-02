@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AddressRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
@@ -11,106 +13,134 @@ class Address
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $address_id;
-
-    #[ORM\Column(type: 'integer')]
-    private $user_id;
+    private $id;
 
     #[ORM\Column(type: 'string', length: 500)]
-    private $address_street;
+    private $streetAddress;
 
-    #[ORM\Column(type: 'string', length: 10)]
-    private $address_apt;
-
-    #[ORM\Column(type: 'string', length: 100)]
-    private $address_country;
+    #[ORM\Column(type: 'string', length: 10, nullable: true)]
+    private $aptAddress;
 
     #[ORM\Column(type: 'string', length: 80)]
-    private $address_city;
+    private $cityAddress;
+
+    #[ORM\Column(type: 'string', length: 100)]
+    private $countryAddress;
 
     #[ORM\Column(type: 'string', length: 12)]
-    private $address_zip;
+    private $zipAddress;
 
-    public function getAddressId(): ?int
+    #[ORM\Column(type: 'boolean')]
+    private $saveAddress;
+
+    #[ORM\ManyToMany(targetEntity: Users::class, mappedBy: 'addressId')]
+    private $userId;
+
+    public function __construct()
     {
-        return $this->address_id;
+        $this->userId = new ArrayCollection();
     }
 
-    public function setAddressId(int $address_id): self
+    public function getId(): ?int
     {
-        $this->address_id = $address_id;
+        return $this->id;
+    }
+
+    public function getStreetAddress(): ?string
+    {
+        return $this->streetAddress;
+    }
+
+    public function setStreetAddress(string $streetAddress): self
+    {
+        $this->streetAddress = $streetAddress;
 
         return $this;
     }
 
-    public function getUserId(): ?int
+    public function getAptAddress(): ?string
     {
-        return $this->user_id;
+        return $this->aptAddress;
     }
 
-    public function setUserId(int $user_id): self
+    public function setAptAddress(?string $aptAddress): self
     {
-        $this->user_id = $user_id;
+        $this->aptAddress = $aptAddress;
 
         return $this;
     }
 
-    public function getAddressStreet(): ?string
+    public function getCityAddress(): ?string
     {
-        return $this->address_street;
+        return $this->cityAddress;
     }
 
-    public function setAddressStreet(string $address_street): self
+    public function setCityAddress(string $cityAddress): self
     {
-        $this->address_street = $address_street;
+        $this->cityAddress = $cityAddress;
 
         return $this;
     }
 
-    public function getAddressApt(): ?string
+    public function getCountryAddress(): ?string
     {
-        return $this->address_apt;
+        return $this->countryAddress;
     }
 
-    public function setAddressApt(string $address_apt): self
+    public function setCountryAddress(string $countryAddress): self
     {
-        $this->address_apt = $address_apt;
+        $this->countryAddress = $countryAddress;
 
         return $this;
     }
 
-    public function getAddressCountry(): ?string
+    public function getZipAddress(): ?string
     {
-        return $this->address_country;
+        return $this->zipAddress;
     }
 
-    public function setAddressCountry(string $address_country): self
+    public function setZipAddress(string $zipAddress): self
     {
-        $this->address_country = $address_country;
+        $this->zipAddress = $zipAddress;
 
         return $this;
     }
 
-    public function getAddressCity(): ?string
+    public function isSaveAddress(): ?bool
     {
-        return $this->address_city;
+        return $this->saveAddress;
     }
 
-    public function setAddressCity(string $address_city): self
+    public function setSaveAddress(bool $saveAddress): self
     {
-        $this->address_city = $address_city;
+        $this->saveAddress = $saveAddress;
 
         return $this;
     }
 
-    public function getAddressZip(): ?string
+    /**
+     * @return Collection<int, Users>
+     */
+    public function getUserId(): Collection
     {
-        return $this->address_zip;
+        return $this->userId;
     }
 
-    public function setAddressZip(string $address_zip): self
+    public function addUserId(Users $userId): self
     {
-        $this->address_zip = $address_zip;
+        if (!$this->userId->contains($userId)) {
+            $this->userId[] = $userId;
+            $userId->addAddressId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserId(Users $userId): self
+    {
+        if ($this->userId->removeElement($userId)) {
+            $userId->removeAddressId($this);
+        }
 
         return $this;
     }

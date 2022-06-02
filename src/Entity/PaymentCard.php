@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PaymentCardRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PaymentCardRepository::class)]
@@ -11,55 +13,59 @@ class PaymentCard
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $card_id;
+    private $id;
 
-    #[ORM\Column(type: 'integer')]
-    private $user_id;
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
+    private $name;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $card_number;
+    private $cardNumber;
 
     #[ORM\Column(type: 'string', length: 255)]
     private $cvv;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $valid_month;
+    #[ORM\Column(type: 'integer')]
+    private $validMonth;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $valid_year;
+    #[ORM\Column(type: 'integer')]
+    private $validYear;
 
-    public function getCardId(): ?int
+    #[ORM\Column(type: 'boolean')]
+    private $saveCard;
+
+    #[ORM\ManyToMany(targetEntity: Users::class, mappedBy: 'cardId')]
+    private $userId;
+
+    public function __construct()
     {
-        return $this->card_id;
+        $this->userId = new ArrayCollection();
     }
 
-    public function setCardId(int $card_id): self
+    public function getId(): ?int
     {
-        $this->card_id = $card_id;
-
-        return $this;
+        return $this->id;
     }
 
-    public function getUserId(): ?int
+    public function getName(): ?string
     {
-        return $this->user_id;
+        return $this->name;
     }
 
-    public function setUserId(int $user_id): self
+    public function setName(?string $name): self
     {
-        $this->user_id = $user_id;
+        $this->name = $name;
 
         return $this;
     }
 
     public function getCardNumber(): ?string
     {
-        return $this->card_number;
+        return $this->cardNumber;
     }
 
-    public function setCardNumber(string $card_number): self
+    public function setCardNumber(string $cardNumber): self
     {
-        $this->card_number = $card_number;
+        $this->cardNumber = $cardNumber;
 
         return $this;
     }
@@ -76,26 +82,65 @@ class PaymentCard
         return $this;
     }
 
-    public function getValidMonth(): ?string
+    public function getValidMonth(): ?int
     {
-        return $this->valid_month;
+        return $this->validMonth;
     }
 
-    public function setValidMonth(string $valid_month): self
+    public function setValidMonth(int $validMonth): self
     {
-        $this->valid_month = $valid_month;
+        $this->validMonth = $validMonth;
 
         return $this;
     }
 
-    public function getValidYear(): ?string
+    public function getValidYear(): ?int
     {
-        return $this->valid_year;
+        return $this->validYear;
     }
 
-    public function setValidYear(string $valid_year): self
+    public function setValidYear(int $validYear): self
     {
-        $this->valid_year = $valid_year;
+        $this->validYear = $validYear;
+
+        return $this;
+    }
+
+    public function isSaveCard(): ?bool
+    {
+        return $this->saveCard;
+    }
+
+    public function setSaveCard(bool $saveCard): self
+    {
+        $this->saveCard = $saveCard;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Users>
+     */
+    public function getUserId(): Collection
+    {
+        return $this->userId;
+    }
+
+    public function addUserId(Users $userId): self
+    {
+        if (!$this->userId->contains($userId)) {
+            $this->userId[] = $userId;
+            $userId->addCardId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserId(Users $userId): self
+    {
+        if ($this->userId->removeElement($userId)) {
+            $userId->removeCardId($this);
+        }
 
         return $this;
     }

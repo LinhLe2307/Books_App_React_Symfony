@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UsersRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
@@ -11,13 +13,7 @@ class Users
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $user_id;
-
-    #[ORM\Column(type: 'string', length: 100)]
-    private $username;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private $password;
+    private $id;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
     private $firstname;
@@ -25,52 +21,31 @@ class Users
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
     private $lastname;
 
-    #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
     private $email;
 
     #[ORM\Column(type: 'string', length: 15, nullable: true)]
     private $phone;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $address_id;
+    #[ORM\ManyToMany(targetEntity: Address::class, inversedBy: 'userId')]
+    private $addressId;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $card_id;
+    #[ORM\ManyToMany(targetEntity: PaymentCard::class, inversedBy: 'userId')]
+    private $cardId;
 
-    public function getUserId(): ?int
+    #[ORM\OneToMany(mappedBy: 'userId', targetEntity: PlaceOrders::class)]
+    private $orderId;
+
+    public function __construct()
     {
-        return $this->user_id;
+        $this->addressId = new ArrayCollection();
+        $this->cardId = new ArrayCollection();
+        $this->orderId = new ArrayCollection();
     }
 
-    public function setUserId(int $user_id): self
+    public function getId(): ?int
     {
-        $this->user_id = $user_id;
-
-        return $this;
-    }
-
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
-
-    public function setUsername(string $username): self
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
+        return $this->id;
     }
 
     public function getFirstname(): ?string
@@ -121,26 +96,80 @@ class Users
         return $this;
     }
 
-    public function getAddressId(): ?int
+    /**
+     * @return Collection<int, Address>
+     */
+    public function getAddressId(): Collection
     {
-        return $this->address_id;
+        return $this->addressId;
     }
 
-    public function setAddressId(?int $address_id): self
+    public function addAddressId(Address $addressId): self
     {
-        $this->address_id = $address_id;
+        if (!$this->addressId->contains($addressId)) {
+            $this->addressId[] = $addressId;
+        }
 
         return $this;
     }
 
-    public function getCardId(): ?int
+    public function removeAddressId(Address $addressId): self
     {
-        return $this->card_id;
+        $this->addressId->removeElement($addressId);
+
+        return $this;
     }
 
-    public function setCardId(?int $card_id): self
+    /**
+     * @return Collection<int, PaymentCard>
+     */
+    public function getCardId(): Collection
     {
-        $this->card_id = $card_id;
+        return $this->cardId;
+    }
+
+    public function addCardId(PaymentCard $cardId): self
+    {
+        if (!$this->cardId->contains($cardId)) {
+            $this->cardId[] = $cardId;
+        }
+
+        return $this;
+    }
+
+    public function removeCardId(PaymentCard $cardId): self
+    {
+        $this->cardId->removeElement($cardId);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PlaceOrders>
+     */
+    public function getOrderId(): Collection
+    {
+        return $this->orderId;
+    }
+
+    public function addOrderId(PlaceOrders $orderId): self
+    {
+        if (!$this->orderId->contains($orderId)) {
+            $this->orderId[] = $orderId;
+            $orderId->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderId(PlaceOrders $orderId): self
+    {
+        if ($this->orderId->removeElement($orderId)) {
+            // set the owning side to null (unless already changed)
+            if ($orderId->getUserId() === $this) {
+                $orderId->setUserId(null);
+            }
+        }
 
         return $this;
     }
