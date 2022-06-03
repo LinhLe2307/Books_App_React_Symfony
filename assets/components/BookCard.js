@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const BookCard = (props) => {
-  const { id, volumeInfo, saleInfo } = props;
-  const [selectedBooks, setSelectedBooks] = useState([]);
+  const { id, volumeInfo, saleInfo, click } = props;
+  // const [selectedBooks, setSelectedBooks] = useState([]);
 
   const bookTitle = volumeInfo.title;
   const bookImage =
@@ -16,11 +16,11 @@ const BookCard = (props) => {
   // Replacing all the spaces in URL with - for readability. Since the book title is for displaying only, we can use "-", if we use it for search, should use "+"
   const titleFormat = bookTitle && bookTitle.replaceAll(' ', '-');
 
-  const handleAdd = (id) => {
-    const newSelectedBooks = [...selectedBooks];
-    newSelectedBooks.push(id);
-    setSelectedBooks(newSelectedBooks);
-  };
+  // const handleAdd = (id) => {
+  //   const newSelectedBooks = [...selectedBooks];
+  //   newSelectedBooks.push(id);
+  //   setSelectedBooks(newSelectedBooks);
+  // };
 
   // useEffect(() => {
   //   console.log(selectedBooks);
@@ -58,17 +58,20 @@ const BookCard = (props) => {
           {price} {currency}
         </div>
       </div>
+      <button className="btn btn-primary" onClick={() => click(props)}>
+        Add to Cart
+      </button>
 
       {/* <button className="btn btn-primary" onClick={() => handleAdd(id)}>
         Add to Cart
       </button> */}
-      <Link
+      {/* <Link
         to={'/shopping-cart/'}
         state={{ data: props }}
         className="btn btn-primary"
       >
         Add to Cart
-      </Link>
+      </Link> */}
     </div>
   );
 };
