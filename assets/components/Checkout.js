@@ -1,38 +1,38 @@
-import React, { useState, useEffect } from "react";
-import Swal from "sweetalert2";
-import axios from "../../../web/node_modules/axios";
-import { useLocation } from "../../../web/node_modules/react-router-dom";
+import React, { useState, useEffect } from 'react';
+import Swal from 'sweetalert2';
+import axios from '../../../web/node_modules/axios';
+// import { useLocation } from '../../../web/node_modules/react-router-dom';
 
-import BillInfo from "./Checkout/BillInfo";
-import PaymentCard from "./Checkout/PaymentCard";
+import BillInfo from './Checkout/BillInfo';
+import PaymentCard from './Checkout/PaymentCard';
 
-const Checkout = (props) => {
+const Checkout = ({ books, click }) => {
   const [orders, setOrders] = useState([]);
   const [billInfo, setBillInfo] = useState({
-    firstname: "",
-    lastname: "",
-    email: "",
-    phone: "",
+    firstname: '',
+    lastname: '',
+    email: '',
+    phone: '',
     // Address
-    streetAddress: "",
-    aptAddress: "",
-    cityAddress: "",
-    countryAddress: "",
-    zipAddress: "",
+    streetAddress: '',
+    aptAddress: '',
+    cityAddress: '',
+    countryAddress: '',
+    zipAddress: '',
     saveAddress: false,
   });
   const [cardInfo, setCardInfo] = useState({
-    name: "",
-    cardNumber: "",
-    cvv: "",
-    validMonth: "",
-    validYear: "",
+    name: '',
+    cardNumber: '',
+    cvv: '',
+    validMonth: '',
+    validYear: '',
     saveCard: false,
   });
   const [isSaving, setIsSaving] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const location = useLocation();
-  const order = location.state?.data ? location.state.data : [];
+  // const location = useLocation();
+  // const order = location.state?.data ? location.state.data : [];
 
   useEffect(() => {
     fetchOrders();
@@ -40,18 +40,18 @@ const Checkout = (props) => {
 
   const fetchOrders = () => {
     axios
-      .get("/api/checkout")
+      .get('/api/checkout')
       .then((res) => {
         setOrders(res.data);
       })
       .catch((err) => {
-        console.log("Axios error: ", err);
+        console.log('Axios error: ', err);
       });
   };
 
   const handleInputBilling = (e) => {
     //Handle checkbox input
-    if (e.target.name == "saveAddress") {
+    if (e.target.name == 'saveAddress') {
       setBillInfo({ ...billInfo, [e.target.name]: [e.target.checked] });
     } else {
       //Handle other input
@@ -65,7 +65,7 @@ const Checkout = (props) => {
 
   const handleInputCard = (e) => {
     //Handle checkbox input
-    if (e.target.name == "saveCard") {
+    if (e.target.name == 'saveCard') {
       setCardInfo({ ...cardInfo, [e.target.name]: [e.target.checked] });
     } else {
       //Handle other input
@@ -80,7 +80,7 @@ const Checkout = (props) => {
   const handlePost = () => {
     let formData = new FormData();
     setIsSaving(true);
-    const productIds = order.map((product) => product.id);
+    const productIds = books.map((product) => product.id);
 
     for (let [key, value] of Object.entries(billInfo)) {
       formData.append(`${key}`, value[0]);
@@ -93,8 +93,8 @@ const Checkout = (props) => {
 
     //Order
     let address = `${billInfo.streetAddress}, ${billInfo.cityAddress}, ${billInfo.countryAddress} `;
-    formData.append("address", address);
-    formData.append("product_id[]", productIds);
+    formData.append('address', address);
+    formData.append('product_id[]', productIds);
 
     for (let i of FormData.values()) {
       console.log(i);
@@ -102,23 +102,26 @@ const Checkout = (props) => {
     }
 
     axios
-      .post("/api/checkout", formData)
+      .post('/api/checkout', formData)
       .then((res) => {
         Swal.fire({
-          icon: "success",
-          title: "Order placed successfully",
+          icon: 'success',
+          title: 'Order placed successfully',
           showConfirmButton: false,
           timer: 1500,
         });
         setIsSaving(false);
-        setBillInfo("");
+        setBillInfo({});
+        setCardInfo({});
+        //Clear shopping cart
+        click();
         setIsSubmitting(true);
       })
       .catch((err) => {
-        console.log("Axios error: ", err.response.data);
+        console.log('Axios error: ', err.response.data);
         Swal.fire({
-          icon: "error",
-          title: "An error occured",
+          icon: 'error',
+          title: 'An error occured',
           showConfirmButton: false,
           timer: 1500,
         });
@@ -151,12 +154,12 @@ const Checkout = (props) => {
             <div>
               Address:
               {/* Conditional rendering for showing commas */}
-              {billInfo.streetAddress == ""
-                ? " "
+              {billInfo.streetAddress == ''
+                ? ' '
                 : ` ${billInfo.streetAddress} ${billInfo.aptAddress}, `}
-              {billInfo.cityAddress == "" ? " " : `${billInfo.cityAddress}, `}
-              {billInfo.countryAddress == ""
-                ? " "
+              {billInfo.cityAddress == '' ? ' ' : `${billInfo.cityAddress}, `}
+              {billInfo.countryAddress == ''
+                ? ' '
                 : `${billInfo.countryAddress}, `}
               {billInfo.zipAddress}
             </div>
@@ -166,21 +169,24 @@ const Checkout = (props) => {
             <table className="table">
               <thead>
                 <tr>
-                  <th scope="col">Book ID</th>
+                  <th scope="col">Id</th>
                   <th scope="col">Book</th>
                   <th scope="col">Price</th>
                 </tr>
               </thead>
               <tbody>
-                {order?.map((product, key) => {
+                {books?.map((product, key) => {
                   return (
                     <tr key={key}>
-                      <td>{product.id}</td>
+                      <td>{key + 1}</td>
                       <td>
-                        {product.volumeInfo?.title} -{" "}
+                        {product.volumeInfo?.title} -{' '}
                         {product.volumeInfo?.authors[0]}
                       </td>
-                      <td>{product.saleInfo?.listPrice?.amount}</td>
+                      <td>
+                        {product.saleInfo?.listPrice?.amount}{' '}
+                        {product.saleInfo?.listPrice?.currencyCode}
+                      </td>
                     </tr>
                   );
                 })}

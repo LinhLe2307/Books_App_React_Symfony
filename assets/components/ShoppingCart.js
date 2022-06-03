@@ -1,56 +1,27 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { bookList } from './ShoppingList';
 
-const ShoppingCart = () => {
-  const [booksInACart, setBooksInACart] = useState([]);
-  const location = useLocation();
-  const [newBook, setNewBook] = useState(
-    location.state?.data ? location.state.data : ''
-  );
-  // let newBook = location.state?.data ? location.state.data : '';
-
+const ShoppingCart = ({ books, click }) => {
   useEffect(() => {
-    // console.log(newBook);
-    setBooksInACart([...booksInACart, newBook]);
-    addNewBook();
+    console.log('Books in a cart: ', books);
+    console.log('Books list length: ', books.length);
 
     //Warning if reload button is clicked
-    const unloadCallback = (event) => {
-      event.preventDefault();
-      event.returnValue = '';
+    const unloadCallback = (e) => {
+      e.preventDefault();
+      e.returnValue = '';
       return '';
     };
     window.addEventListener('beforeunload', unloadCallback);
     return () => window.removeEventListener('beforeunload', unloadCallback);
   }, []);
 
-  const addNewBook = () => {
-    //Helper list that keeps track of added books
-    booksInACart == '' ? '' : bookList.push(...booksInACart);
-    //If a new book is not empty add it to bookList
-    newBook == '' ? '' : bookList.push(newBook);
-    console.log('Books list on load: ', bookList);
-  };
-
-  const handleDeleteBook = (e) => {
-    let bookId = e.target.name;
-
-    //Clear new book if id matches
-    newBook.id == bookId ? setNewBook('') : '';
-    //Find book by id and delete
-    let i = bookList.findIndex((book) => book.id == bookId);
-    bookList.splice(i, 1);
-    setBooksInACart(...bookList);
-  };
-
-  if (!bookList.length == 0) {
+  if (!books.length == 0) {
     return (
       <div>
         <h1 className="p-3 m-2">Shopping Cart</h1>
-        {bookList?.map((book, key) => {
+        <div>Items count: {books.length}</div>
+        {books.map((book, key) => {
           return (
             <div className="order card m-2" key={key}>
               <div className="card-body d-inline-flex">
@@ -77,7 +48,7 @@ const ShoppingCart = () => {
                 </div>
                 {/*.......... Delete button .........*/}
                 <button
-                  onClick={(e) => handleDeleteBook(e)}
+                  onClick={(e) => click(e)}
                   className="btn btn-light btn-delete"
                   name={book.id}
                 >
@@ -88,8 +59,8 @@ const ShoppingCart = () => {
           );
         })}
         <Link
-          to={'/checkout/'}
-          state={{ data: bookList }}
+          to={'/checkout'}
+          // state={{ data: books }}
           className="btn btn-primary m-2"
         >
           CHECKOUT
