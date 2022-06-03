@@ -164,7 +164,7 @@ const Checkout = ({ books, click }) => {
             <table className="table">
               <thead>
                 <tr>
-                  <th scope="col">Book ID</th>
+                  <th scope="col">Id</th>
                   <th scope="col">Book</th>
                   <th scope="col">Price</th>
                 </tr>
@@ -173,12 +173,15 @@ const Checkout = ({ books, click }) => {
                 {books?.map((product, key) => {
                   return (
                     <tr key={key}>
-                      <td>{product.id}</td>
+                      <td>{key + 1}</td>
                       <td>
                         {product.volumeInfo?.title} -{' '}
                         {product.volumeInfo?.authors[0]}
                       </td>
-                      <td>{product.saleInfo?.listPrice?.amount}</td>
+                      <td>
+                        {product.saleInfo?.listPrice?.amount}{' '}
+                        {product.saleInfo?.listPrice?.currencyCode}
+                      </td>
                     </tr>
                   );
                 })}
