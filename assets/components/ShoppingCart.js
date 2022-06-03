@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { bookList } from './ShoppingList';
 
-const ShoppingCart = ({ books, click, test, num }) => {
+const ShoppingCart = ({ books, click }) => {
   useEffect(() => {
     console.log('Books in a cart: ', books);
     console.log('Books list length: ', books.length);
@@ -60,8 +59,8 @@ const ShoppingCart = ({ books, click, test, num }) => {
           );
         })}
         <Link
-          to={'/checkout/'}
-          state={{ data: bookList }}
+          to={'/checkout'}
+          // state={{ data: books }}
           className="btn btn-primary m-2"
         >
           CHECKOUT

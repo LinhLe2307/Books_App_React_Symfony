@@ -30,8 +30,11 @@ function Main() {
       //Account for repeating books
       book.id === bookId ? false : true
     );
-
     setBooksInACart(filtered);
+  };
+
+  const handleClearBookList = () => {
+    setBooksInACart([]);
   };
 
   const NoMatch = () => {
@@ -72,7 +75,9 @@ function Main() {
           />
           <Route
             path="/checkout"
-            element={<Checkout books={booksInACart} click={handleDeleteBook} />}
+            element={
+              <Checkout books={booksInACart} click={handleClearBookList} />
+            }
           />
 
           {/* Handle non-existing path, will redirect to /404 */}
