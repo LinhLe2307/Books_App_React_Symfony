@@ -6,6 +6,8 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom';
+import Login from './components/Login';
+import Logout from './components/Logout';
 
 import Layout from './pages/Layout';
 import HomePage from './components/HomePage';
@@ -45,6 +47,9 @@ function Main() {
       <Routes>
         <Route exact path="/" element={<Layout books={booksInACart} />}>
           <Route index element={<HomePage click={handleAddToCart} />} />
+
+          <Route path="/login" element={<Login />} />
+          <Route path="/logout" element={<Logout />} />
 
           <Route
             path="/:id/:title"
