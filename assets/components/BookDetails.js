@@ -4,12 +4,11 @@ import parse from 'html-react-parser';
 import axios from 'axios';
 import { handleIndividualData } from '../handleIndividualData';
 
-const BookDetails = () => {
+const BookDetails = ({ click }) => {
   // Since book's id matches the id in URL, we can use it as query to get the data
   const id = useParams().id;
   const [bookInfo, setBookInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [bookToShopCart, setBookToShopCart] = useState({});
 
   const bookTitle = bookInfo.volumeInfo?.title;
   const bookImage =
@@ -36,8 +35,6 @@ const BookDetails = () => {
         const data = handleIndividualData(res.data);
         setBookInfo(data);
         console.log(res.data);
-        //Data that will be passed to shopping cart
-        setBookToShopCart(res.data);
         setIsLoading(false);
       })
       .catch((error) => console.log(error));
@@ -112,17 +109,13 @@ const BookDetails = () => {
           {/*............. Description ..........*/}
           {/* Parse string to HTML */}
           <div className="book-description mt-3">{parse(`${description}`)}</div>
-          {/* <button onClick={() => handleSave(id)}>Add to Cart</button> */}
           <div className="book-price mt-3">
             {price} {currency}
           </div>
-          <Link
-            to={'/shopping-cart/'}
-            state={{ data: bookToShopCart }}
-            className="btn btn-primary my-3 px-5 text-uppercase"
-          >
+          {/*............... Button ..............*/}
+          <button className="btn btn-primary" onClick={() => click(bookInfo)}>
             Add to Cart
-          </Link>
+          </button>
         </div>
       </div>
     </div>

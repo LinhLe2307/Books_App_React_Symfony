@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const Header = () => {
+const Header = ({ books }) => {
   const [inputField, setInputField] = useState('');
 
   const handleSubmit = (e) => {
@@ -57,6 +57,7 @@ const Header = () => {
             </li>
             <li className="nav-item">
               <Link to="/shopping-cart" className="nav-link active">
+                <span className="text-white">{books.length ?? 0 + ' '}</span>
                 <span className="material-symbols-outlined text-white">
                   shopping_cart
                 </span>
