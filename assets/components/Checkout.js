@@ -84,22 +84,15 @@ const Checkout = ({ books, click }) => {
 
     for (let [key, value] of Object.entries(billInfo)) {
       formData.append(`${key}`, `${value}`);
-      // console.log(`${key}`, value[0]);
     }
     for (let [key, value] of Object.entries(cardInfo)) {
       formData.append(`${key}`, `${value}`);
-      // console.log(`${key}`, value[0]);
     }
 
     //Order
     let address = `${billInfo.streetAddress}, ${billInfo.cityAddress}, ${billInfo.countryAddress} `;
     formData.append("address", address);
     formData.append("product_id[]", productIds);
-
-    // for (let i of FormData.values()) {
-    //   console.log(i);
-    //   console.log(typeof i);
-    // }
 
     axios
       .post("/api/checkout", formData)
@@ -114,7 +107,7 @@ const Checkout = ({ books, click }) => {
         setBillInfo({});
         setCardInfo({});
         //Clear shopping cart
-        // click();
+        click();
         setIsSubmitting(true);
       })
       .catch((err) => {
