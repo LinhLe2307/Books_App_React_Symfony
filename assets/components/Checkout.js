@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import axios from "../../../web/node_modules/axios";
+import axios from "axios";
 // import { useLocation } from '../../../web/node_modules/react-router-dom';
 
 import BillInfo from "./Checkout/BillInfo";
