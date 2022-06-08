@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const BookCard = (props) => {
   const { id, volumeInfo, saleInfo, click } = props;
@@ -14,37 +14,27 @@ const BookCard = (props) => {
   const currency = saleInfo.listPrice.currencyCode;
 
   // Replacing all the spaces in URL with - for readability. Since the book title is for displaying only, we can use "-", if we use it for search, should use "+"
-  const titleFormat = bookTitle && bookTitle.replaceAll(' ', '-');
-
-  // const handleAdd = (id) => {
-  //   const newSelectedBooks = [...selectedBooks];
-  //   newSelectedBooks.push(id);
-  //   setSelectedBooks(newSelectedBooks);
-  // };
-
-  // useEffect(() => {
-  //   console.log(selectedBooks);
-  // }, [selectedBooks]);
+  const titleFormat = bookTitle && bookTitle.replaceAll(" ", "-");
 
   return (
-    <div className="card" style={{ width: '15rem' }}>
+    <div className="card" style={{ width: "15rem" }}>
       {/* This is for taking the image */}
-      <Link to={`${id}/${titleFormat}`}>
+      <Link to={`${id}/${titleFormat}`} state={{ data: props.data }}>
         <img src={bookImage} alt={bookTitle} className="card-img-top" />
       </Link>
 
       <div className="card-body">
         {/* Send the book id and title to BookDetails as :id/:title to display it in URL and retrieve id by useParams().id to fetch data*/}
-        <Link to={`${id}/${titleFormat}`}>
+        <Link to={`${id}/${titleFormat}`} state={{ data: props.data }}>
           <h5 className="card-title">{bookTitle}</h5>
         </Link>
         <ul>
           {/* Link cannot be click when it's Unknown Authors  */}
-          {bookAuthors === 'Unknown Authors' ? (
+          {bookAuthors === "Unknown Authors" ? (
             <li>Unknown Authors</li>
           ) : (
             bookAuthors?.map((author) => {
-              const authorQuery = author.replaceAll(' ', '+');
+              const authorQuery = author.replaceAll(" ", "+");
               return (
                 <li key={author}>
                   <Link to={`/search/author/${authorQuery}`}>{author}</Link>
@@ -61,17 +51,6 @@ const BookCard = (props) => {
       <button className="btn btn-primary" onClick={() => click(props)}>
         Add to Cart
       </button>
-
-      {/* <button className="btn btn-primary" onClick={() => handleAdd(id)}>
-        Add to Cart
-      </button> */}
-      {/* <Link
-        to={'/shopping-cart/'}
-        state={{ data: props }}
-        className="btn btn-primary"
-      >
-        Add to Cart
-      </Link> */}
     </div>
   );
 };

@@ -35,11 +35,11 @@ const HomePage = ({ click }) => {
 
   return (
     <main>
-      <h1 className="p-3 m-2 text-white">Homepage</h1>
+      <h1 className="p-3 m-2 text-white">Homepage Hi</h1>
 
       <div className="justify-content-center d-flex p-2 flex-wrap">
         {books.map((book, key) => {
-          return <BookCard key={key} {...book} click={click} />;
+          return <BookCard key={key} data={book} {...book} click={click} />;
         })}
       </div>
     </main>

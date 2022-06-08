@@ -1,35 +1,42 @@
-import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom/client';
+import React, { useEffect, useState } from "react";
+import ReactDOM from "react-dom/client";
 import {
   BrowserRouter as BrowserRouter,
   Routes,
   Route,
   Navigate,
-} from 'react-router-dom';
+} from "react-router-dom";
 
-import Layout from './pages/Layout';
-import HomePage from './components/HomePage';
-import ShoppingCart from './components/ShoppingCart';
-import BookDetails from './components/BookDetails';
-import SearchPage from './components/SearchPage';
-import Checkout from './components/Checkout';
+import Layout from "./pages/Layout";
+import HomePage from "./components/HomePage";
+import ShoppingCart from "./components/ShoppingCart";
+import BookDetails from "./components/BookDetails";
+import SearchPage from "./components/SearchPage";
+import Checkout from "./components/Checkout";
 
 function Main() {
   const [booksInACart, setBooksInACart] = useState([]);
 
   const handleAddToCart = (book) => {
     setBooksInACart([...booksInACart, book]);
-    console.log('Books in a cart: ', booksInACart);
+    // console.log("Books in a cart: ", booksInACart);
   };
 
-  const handleDeleteBook = (e) => {
-    console.log('Delete book is clicked', e.target.name);
-    let bookId = e.target.name;
+  const handleDeleteBook = (e, key) => {
+    // console.log("Delete book is clicked", e.target.name);
+    // let bookId = e.target.name;
 
-    let filtered = booksInACart.filter((book) =>
+    // if the same book has been added multiple times, using bookId will delete the whole cart
+    let filtered = booksInACart.filter((book, index) =>
       //Account for repeating books
-      book.id === bookId ? false : true
+      index === key ? false : true
     );
+
+    // let filtered = booksInACart.filter((book) =>
+    //   //Account for repeating books
+    //   book.id === bookId ? false : true
+    // );
+
     setBooksInACart(filtered);
   };
 
@@ -92,7 +99,7 @@ function Main() {
 
 export default Main;
 
-const root = ReactDOM.createRoot(document.getElementById('app'));
+const root = ReactDOM.createRoot(document.getElementById("app"));
 root.render(
   //<React.StrictMode>
   <Main />

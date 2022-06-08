@@ -1,19 +1,19 @@
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const ShoppingCart = ({ books, click }) => {
   useEffect(() => {
-    console.log('Books in a cart: ', books);
-    console.log('Books list length: ', books.length);
+    // console.log("Books in a cart: ", books);
+    // console.log("Books list length: ", books.length);
 
     //Warning if reload button is clicked
     const unloadCallback = (e) => {
       e.preventDefault();
-      e.returnValue = '';
-      return '';
+      e.returnValue = "";
+      return "";
     };
-    window.addEventListener('beforeunload', unloadCallback);
-    return () => window.removeEventListener('beforeunload', unloadCallback);
+    window.addEventListener("beforeunload", unloadCallback);
+    return () => window.removeEventListener("beforeunload", unloadCallback);
   }, []);
 
   if (!books.length == 0) {
@@ -29,7 +29,7 @@ const ShoppingCart = ({ books, click }) => {
                 <img
                   className="card-image d-inline-flex p-2"
                   src={book.volumeInfo?.imageLinks?.thumbnail}
-                  style={{ height: '150px', width: 'auto' }}
+                  style={{ height: "150px", width: "auto" }}
                 ></img>
                 <div className="card-content d-inline">
                   {/*.......... Card title .........*/}
@@ -42,13 +42,13 @@ const ShoppingCart = ({ books, click }) => {
                   </div>
                   {/*.......... Card price .........*/}
                   <div className="card-price p-2">
-                    {book.saleInfo?.listPrice?.amount}{' '}
+                    {book.saleInfo?.listPrice?.amount}{" "}
                     {book.saleInfo?.listPrice?.currencyCode}
                   </div>
                 </div>
                 {/*.......... Delete button .........*/}
                 <button
-                  onClick={(e) => click(e)}
+                  onClick={(e) => click(e, key)}
                   className="btn btn-light btn-delete"
                   name={book.id}
                 >
@@ -59,7 +59,7 @@ const ShoppingCart = ({ books, click }) => {
           );
         })}
         <Link
-          to={'/checkout'}
+          to={"/checkout"}
           // state={{ data: books }}
           className="btn btn-primary m-2"
         >

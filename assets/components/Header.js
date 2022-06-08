@@ -25,7 +25,6 @@ const Header = ({ books }) => {
   const handleCallbackResponse = (res) => {
     console.log("Encoded JWI ID token: " + res.credential);
     let userObject = jwt_decode(res.credential);
-    console.log(userObject);
     setUser(userObject);
     document.getElementById("signInDiv").hidden = true;
   };
@@ -104,7 +103,12 @@ const Header = ({ books }) => {
             <li id="signInDiv"></li>
             {Object.keys(user).length != 0 && (
               // ......... Sign out ...........
-              <button onClick={(e) => handleSignOut(e)}>Sign Out</button>
+              <button
+                onClick={(e) => handleSignOut(e)}
+                style={{ height: "3rem" }}
+              >
+                Sign Out
+              </button>
             )}
             {user && (
               <div>
