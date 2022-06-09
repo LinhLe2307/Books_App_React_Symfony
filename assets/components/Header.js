@@ -5,6 +5,7 @@ import jwt_decode from "jwt-decode"; //npm install jwt-decode
 const Header = ({ books }) => {
   const [inputField, setInputField] = useState("");
   const [user, setUser] = useState({});
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -101,18 +102,22 @@ const Header = ({ books }) => {
 
             {/*......... Sign in ...........*/}
             <li id="signInDiv"></li>
-            {Object.keys(user).length != 0 && (
+            {isLoggingOut && Object.keys(user).length != 0 && (
               // ......... Sign out ...........
               <button
                 onClick={(e) => handleSignOut(e)}
-                style={{ height: "3rem" }}
+                className="btn btn-primary"
+                style={{ height: "2.5rem" }}
               >
                 Sign Out
               </button>
             )}
             {user && (
-              <div>
-                <img src={user.picture}></img>
+              <div onClick={() => setIsLoggingOut((prevState) => !prevState)}>
+                <img
+                  style={{ height: "3rem", borderRadius: "50%" }}
+                  src={user.picture}
+                ></img>
                 <h3 style={{ color: "white" }}>{user.name}</h3>
               </div>
             )}
