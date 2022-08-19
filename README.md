@@ -16,6 +16,11 @@ This a FullStack App made as a project for Symfony and React courses.
 7. Visit URL: http://localhost:8007/ to see the app
 8. Use Crtl + C to stop the watch
 
+# Scripts
+
+- `npm run watch` - to run locally
+- `npm run deploy` - to create build, commit and push to Heroku
+
 # Tech stack
 
 1.  [Symfony](https://symfony.com/)
