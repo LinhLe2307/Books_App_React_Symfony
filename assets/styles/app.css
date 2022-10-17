@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Dosis&family=Raleway&family=Roboto&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;700;900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+@import url('https://fonts.googleapis.com/css2?family=Dosis&family=Raleway&family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
 
 * {
   margin: 0;
@@ -28,7 +28,7 @@
 
 body {
   height: 100vh;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   max-width: 1440px;
   margin: 0 auto;
 }
@@ -44,7 +44,7 @@ main {
 }
 
 h1 {
-  font-family: "Pacifico", cursive;
+  font-family: 'Pacifico', cursive;
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
@@ -184,7 +184,7 @@ footer a {
 }
 
 .material-symbols-outlined {
-  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 48;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
 }
 
 #btnSubmit {
@@ -249,4 +249,11 @@ footer a {
   padding: 0.5rem;
   height: 50px;
   width: 50px;
+}
+
+/*............. Books preview .............*/
+#viewerCanvas {
+  width: 700px;
+  height: 1000px;
+  z-index: 10;
 }
