@@ -25,11 +25,16 @@ const BookDetails = ({ click }) => {
   const publisher = volumeInfo?.publisher ?? '';
   let mature = volumeInfo?.maturityRating ?? '';
   mature = mature == 'MATURE' ? true : false;
+  const rating = volumeInfo?.ratingsCount ?? '';
 
   const handlePreview = () => {
-    console.log(showPreview);
     setShowPreview(!showPreview);
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    console.log(bookInfo);
+  }, []);
 
   return (
     <div>
@@ -62,6 +67,13 @@ const BookDetails = ({ click }) => {
           {/*............. Right column ..........*/}
           <div className='col-9'>
             <h1>{bookTitle}</h1>
+            <div>
+              {rating
+                ? Array.apply(null, Array(5)).map((k, i) =>
+                    i <= rating ? '★' : '☆'
+                  )
+                : ''}
+            </div>
             <div>
               {/*............. Authors ..........*/}
               <h2>Author:</h2>
