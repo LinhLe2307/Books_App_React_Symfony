@@ -98,7 +98,7 @@ const Header = ({ books }) => {
                   style={{ height: '3rem', borderRadius: '50%' }}
                   src={user.picture}
                 ></img>
-                <h3 style={{ color: 'white' }}>{user.name}</h3>
+                <p style={{ color: 'white' }}>{user.name}</p>
               </div>
             )}
           </ul>
