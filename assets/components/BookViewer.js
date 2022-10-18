@@ -1,20 +1,22 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from "react";
 
 const BookViewer = ({ ISBN_num }) => {
   // Initialize loaded state as false
   const [loaded, setLoaded] = useState(false);
+  const [hasPreview, setHasPreview] = useState(true);
   const canvasRef = useRef();
 
   // Create alert message if book not found in Google Database
   const alertNotFound = () => {
-    alert('could not embed the book!');
+    setHasPreview(false);
   };
+
   // Add a Google Books script tag and event listener if the tag has loaded
   useEffect(() => {
-    const scriptTag = document.createElement('script');
-    scriptTag.src = 'https://www.google.com/books/jsapi.js';
-    scriptTag.addEventListener('load', () => setLoaded(true));
-    scriptTag.id = 'google-script';
+    const scriptTag = document.createElement("script");
+    scriptTag.src = "https://www.google.com/books/jsapi.js";
+    scriptTag.addEventListener("load", () => setLoaded(true));
+    scriptTag.id = "google-script";
     document.body.appendChild(scriptTag);
   }, []);
 
@@ -24,25 +26,25 @@ const BookViewer = ({ ISBN_num }) => {
     else {
       if (window.viewer) {
         let viewer = new window.google.books.DefaultViewer(canvasRef.current);
-        viewer.load('ISBN:' + ISBN_num, alertNotFound);
+        viewer.load("ISBN:" + ISBN_num, alertNotFound());
       } else {
         window.google.books.load();
         window.google.books.setOnLoadCallback(() => {
           let viewer = new window.google.books.DefaultViewer(canvasRef.current);
           window.viewer = viewer;
-          viewer.load('ISBN:' + ISBN_num, alertNotFound);
+          viewer.load("ISBN:" + ISBN_num, alertNotFound());
         });
       }
     }
   }, [loaded]);
   return (
     <div>
-      {loaded ? (
+      {loaded && hasPreview ? (
         <div>
           <div ref={canvasRef} id='viewerCanvas'></div>
         </div>
       ) : (
-        'Script not loaded'
+        "No preview available"
       )}
     </div>
   );

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const SearchBar = () => {
-  const [inputField, setInputField] = useState('');
+  const [inputField, setInputField] = useState("");
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -11,7 +11,7 @@ const SearchBar = () => {
   // Input from users
   const handleChange = e => {
     //in case someone has put spaces in the input and format it to look nicer in the URL using +
-    const inputFormat = e.target.value.trim().replaceAll(' ', '+');
+    const inputFormat = e.target.value.trim().replaceAll(" ", "+");
     setInputField(inputFormat);
   };
 
@@ -23,6 +23,7 @@ const SearchBar = () => {
         onChange={handleChange}
         defaultValue={inputField}
         placeholder='Search...'
+        style={{ padding: "0.5rem", borderRadius: "10px", marginRight: "1rem" }}
       />
       <button type='submit' className='btn btn-primary'>
         <Link to={`/search/${inputField}`} className='text-light'>

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useParams, useLocation } from 'react-router-dom';
-import parse from 'html-react-parser';
+import React, { useEffect, useState } from "react";
+import { Link, useParams, useLocation } from "react-router-dom";
+import parse from "html-react-parser";
 
-import BookViewer from './BookViewer';
+import BookViewer from "./BookViewer";
+import SearchLibrary from "./SearchLibrary";
 
 const BookDetails = ({ click }) => {
   const [showPreview, setShowPreview] = useState(true);
@@ -18,14 +19,14 @@ const BookDetails = ({ click }) => {
   const description = volumeInfo?.description;
   const price = saleInfo?.listPrice?.amount;
   const currency = saleInfo?.listPrice?.currencyCode;
-  const language = volumeInfo?.language ?? '';
+  const language = volumeInfo?.language ?? "";
   const categories = volumeInfo?.categories ?? [];
   const ISBN = volumeInfo?.industryIdentifiers ?? [];
-  const pages = volumeInfo?.pageCount ?? '';
-  const publisher = volumeInfo?.publisher ?? '';
-  let mature = volumeInfo?.maturityRating ?? '';
-  mature = mature == 'MATURE' ? true : false;
-  const rating = volumeInfo?.ratingsCount ?? '';
+  const pages = volumeInfo?.pageCount ?? "";
+  const publisher = volumeInfo?.publisher ?? "";
+  let mature = volumeInfo?.maturityRating ?? "";
+  mature = mature == "MATURE" ? true : false;
+  const rating = volumeInfo?.ratingsCount ?? "";
 
   const handlePreview = () => {
     setShowPreview(!showPreview);
@@ -50,11 +51,11 @@ const BookDetails = ({ click }) => {
                 alt={bookTitle}
               />
               {/*........ Mature content warning ......*/}
-              <div className='mature'>{mature ? '🔞' : ''}</div>
+              <div className='mature'>{mature ? "🔞" : ""}</div>
             </div>
             {/*........ Language, categories, pages........*/}
             <h4 className='d-inline'>Language:</h4>
-            <span>{' ' + language}</span>
+            <span>{" " + language}</span>
             <h4>Categories:</h4>
             <div className='categories'>
               {categories.map((category, key) => {
@@ -62,7 +63,7 @@ const BookDetails = ({ click }) => {
               })}
             </div>
             <h4 className='d-inline'>Pages:</h4>
-            <span>{' ' + pages}</span>
+            <span>{" " + pages}</span>
           </div>
           {/*............. Right column ..........*/}
           <div className='col-9'>
@@ -70,22 +71,22 @@ const BookDetails = ({ click }) => {
             <div>
               {rating
                 ? Array.apply(null, Array(5)).map((k, i) =>
-                    i <= rating ? '★' : '☆'
+                    i <= rating ? "★" : "☆"
                   )
-                : ''}
+                : ""}
             </div>
             <div>
               {/*............. Authors ..........*/}
               <h2>Author:</h2>
               {/* Link cannot be click when it's Unknown Authors  */}
-              {bookAuthors === 'Unknown Authors'
-                ? 'Unknown Authors'
+              {bookAuthors === "Unknown Authors"
+                ? "Unknown Authors"
                 : bookAuthors?.map(author => {
-                    const authorQuery = author.replaceAll(' ', '+');
+                    const authorQuery = author.replaceAll(" ", "+");
                     return (
                       <h3 key={author}>
                         <Link to={`/search/author/${authorQuery}`}>
-                          {author + ' '}
+                          {author + " "}
                         </Link>
                       </h3>
                     );
@@ -115,10 +116,11 @@ const BookDetails = ({ click }) => {
             </button>
           </div>
         </div>
+        <SearchLibrary bookAuthor={bookAuthors[0]} bookTitle={bookTitle} />
         <button className='btn btn-primary' onClick={handlePreview}>
-          {showPreview ? 'Hide preview' : 'Show preview'}
+          {showPreview ? "Hide preview" : "Show preview"}
         </button>
-        {showPreview ? <BookViewer ISBN_num={ISBN[0].identifier} /> : ''}
+        {showPreview ? <BookViewer ISBN_num={ISBN[0].identifier} /> : ""}
       </div>
     </div>
   );
