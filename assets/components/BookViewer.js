@@ -39,12 +39,12 @@ const BookViewer = ({ ISBN_num }) => {
   }, [loaded]);
   return (
     <div>
-      {loaded && hasPreview ? (
+      {loaded ? (
         <div>
           <div ref={canvasRef} id='viewerCanvas'></div>
         </div>
       ) : (
-        "No preview available"
+        "Preview is loading..."
       )}
     </div>
   );

@@ -34,7 +34,6 @@ const BookDetails = ({ click }) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log(bookInfo);
   }, []);
 
   return (

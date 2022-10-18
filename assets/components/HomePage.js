@@ -33,6 +33,16 @@ const HomePage = ({ click }) => {
     return availableData;
   };
 
+  if (isLoading) {
+    return (
+      <div
+        className='d-flex justify-content-center'
+        style={{ height: "100vh" }}
+      >
+        <div className='spinner-border' role='status'></div>
+      </div>
+    );
+  }
   return (
     <main className='container-fluid'>
       <h1 className='p-3 m-2 text-white'>Homepage</h1>
