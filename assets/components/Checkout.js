@@ -35,21 +35,22 @@ const Checkout = ({ books, click }) => {
   // const order = location.state?.data ? location.state.data : [];
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     fetchOrders();
   }, []);
 
   const fetchOrders = () => {
     axios
       .get("/api/checkout")
-      .then((res) => {
+      .then(res => {
         setOrders(res.data);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log("Axios error: ", err);
       });
   };
 
-  const handleInputBilling = (e) => {
+  const handleInputBilling = e => {
     //Handle checkbox input
     if (e.target.name == "saveAddress") {
       setBillInfo({ ...billInfo, [e.target.name]: [e.target.checked] });
@@ -60,10 +61,9 @@ const Checkout = ({ books, click }) => {
         [e.target.name]: [e.target.value],
       });
     }
-    // console.log(billInfo);
   };
 
-  const handleInputCard = (e) => {
+  const handleInputCard = e => {
     //Handle checkbox input
     if (e.target.name == "saveCard") {
       setCardInfo({ ...cardInfo, [e.target.name]: [e.target.checked] });
@@ -74,13 +74,12 @@ const Checkout = ({ books, click }) => {
         [e.target.name]: [e.target.value],
       });
     }
-    // console.log(cardInfo);
   };
 
   const handlePost = () => {
     let formData = new FormData();
     setIsSaving(true);
-    const productIds = books.map((product) => product.id);
+    const productIds = books.map(product => product.id);
 
     for (let [key, value] of Object.entries(billInfo)) {
       formData.append(`${key}`, `${value}`);
@@ -96,7 +95,7 @@ const Checkout = ({ books, click }) => {
 
     axios
       .post("/api/checkout", formData)
-      .then((res) => {
+      .then(res => {
         Swal.fire({
           icon: "success",
           title: "Order placed successfully",
@@ -110,7 +109,7 @@ const Checkout = ({ books, click }) => {
         click();
         setIsSubmitting(true);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log("Axios error: ", err.response.data);
         Swal.fire({
           icon: "error",
@@ -128,15 +127,15 @@ const Checkout = ({ books, click }) => {
   }, [isSubmitting]);
 
   return (
-    <div className="container checkout">
-      <div className="row">
-        <div className="col">
-          <BillInfo change={(e) => handleInputBilling(e)} />
-          <PaymentCard change={(e) => handleInputCard(e)} />
+    <div className='container checkout'>
+      <div className='row'>
+        <div className='col'>
+          <BillInfo change={e => handleInputBilling(e)} />
+          <PaymentCard change={e => handleInputCard(e)} />
         </div>
-        <div className="col">
+        <div className='col'>
           {/*....... Order overview .......*/}
-          <div className="order-overview border rounded m-3 p-3">
+          <div className='order-overview border rounded m-3 p-3'>
             <h3>Your order</h3>
             {/* Billing details */}
             <h4></h4>
@@ -159,12 +158,12 @@ const Checkout = ({ books, click }) => {
             <div>Phone: {billInfo.phone}</div>
 
             {/* Products list */}
-            <table className="table">
+            <table className='table'>
               <thead>
                 <tr>
-                  <th scope="col">Id</th>
-                  <th scope="col">Book</th>
-                  <th scope="col">Price</th>
+                  <th scope='col'>Id</th>
+                  <th scope='col'>Book</th>
+                  <th scope='col'>Price</th>
                 </tr>
               </thead>
               <tbody>
@@ -187,20 +186,20 @@ const Checkout = ({ books, click }) => {
             </table>
             <button
               disabled={isSaving}
-              className="btn btn-primary"
+              className='btn btn-primary'
               onClick={handlePost}
             >
               PLACE ORDER
             </button>
           </div>
           {/*....... Order history .......*/}
-          <div className="border rounded m-3 p-3">
+          <div className='border rounded m-3 p-3'>
             <h4>Order history</h4>
-            <table className="table">
+            <table className='table'>
               <thead>
                 <tr>
-                  <th scope="col">Order ID</th>
-                  <th scope="col">Order info</th>
+                  <th scope='col'>Order ID</th>
+                  <th scope='col'>Order info</th>
                 </tr>
               </thead>
               <tbody>

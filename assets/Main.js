@@ -17,25 +17,16 @@ import Checkout from "./components/Checkout";
 function Main() {
   const [booksInACart, setBooksInACart] = useState([]);
 
-  const handleAddToCart = (book) => {
+  const handleAddToCart = book => {
     setBooksInACart([...booksInACart, book]);
-    // console.log("Books in a cart: ", booksInACart);
   };
 
   const handleDeleteBook = (e, key) => {
-    // console.log("Delete book is clicked", e.target.name);
-    // let bookId = e.target.name;
-
     // if the same book has been added multiple times, using bookId will delete the whole cart
     let filtered = booksInACart.filter((book, index) =>
       //Account for repeating books
       index === key ? false : true
     );
-
-    // let filtered = booksInACart.filter((book) =>
-    //   //Account for repeating books
-    //   book.id === bookId ? false : true
-    // );
 
     setBooksInACart(filtered);
   };
@@ -50,47 +41,47 @@ function Main() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route exact path="/" element={<Layout books={booksInACart} />}>
+        <Route exact path='/' element={<Layout books={booksInACart} />}>
           <Route index element={<HomePage click={handleAddToCart} />} />
 
           <Route
-            path="/:id/:title"
+            path='/:id/:title'
             element={<BookDetails click={handleAddToCart} />}
           />
           {/* This is when searching keyword (users' inputs) */}
           <Route
-            path="/search/:keyword"
+            path='/search/:keyword'
             element={<SearchPage click={handleAddToCart} />}
           />
           <Route
-            path="/search/:keyword/:id/:title"
+            path='/search/:keyword/:id/:title'
             element={<BookDetails click={handleAddToCart} />}
           />
 
           {/* This is when clicking authors */}
-          <Route exact path="/search/author/:name" element={<SearchPage />} />
+          <Route exact path='/search/author/:name' element={<SearchPage />} />
           <Route
             exact
-            path="/search/author/:name/:id/:tile"
+            path='/search/author/:name/:id/:tile'
             element={<BookDetails click={handleAddToCart} />}
           />
           <Route
-            path="/shopping-cart"
+            path='/shopping-cart'
             element={
               <ShoppingCart books={booksInACart} click={handleDeleteBook} />
             }
           />
           <Route
-            path="/checkout"
+            path='/checkout'
             element={
               <Checkout books={booksInACart} click={handleClearBookList} />
             }
           />
 
           {/* Handle non-existing path, will redirect to /404 */}
-          <Route path="/404" element={<NoMatch />} />
-          <Route path="/*" element={<Navigate to="/404" />} />
-          <Route path="/search/author/*" element={<Navigate to="/404" />} />
+          <Route path='/404' element={<NoMatch />} />
+          <Route path='/*' element={<Navigate to='/404' />} />
+          <Route path='/search/author/*' element={<Navigate to='/404' />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -26,6 +26,10 @@
   border: 1px solid var(--accent-color-dark);
 }
 
+.btn-secondary a {
+  color: white;
+}
+
 body {
   height: 100vh;
   font-family: "Roboto", sans-serif;
@@ -89,6 +93,13 @@ main .card {
   margin: 1px;
 }
 
+main .card:hover {
+  transform: scale(1.02);
+  transition: all 0.2s;
+  box-shadow: 0 0 6px black;
+  z-index: 100;
+}
+
 /*...... Book details .......*/
 .book-details h2 {
   font-weight: 300;
@@ -144,7 +155,6 @@ footer a {
   background-color: rgb(255, 239, 236);
   padding: 4rem 0 3rem;
   position: relative;
-  /* top: -0.5rem; */
 }
 
 #contact h2 {
@@ -249,4 +259,11 @@ footer a {
   padding: 0.5rem;
   height: 50px;
   width: 50px;
+}
+
+/*............. Books preview .............*/
+#viewerCanvas {
+  width: 700px;
+  height: 1000px;
+  z-index: 10;
 }

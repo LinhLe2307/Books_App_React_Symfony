@@ -1,55 +1,56 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const ShoppingCart = ({ books, click }) => {
   useEffect(() => {
     // console.log("Books in a cart: ", books);
     // console.log("Books list length: ", books.length);
+    window.scrollTo(0, 0);
 
     //Warning if reload button is clicked
-    const unloadCallback = (e) => {
+    const unloadCallback = e => {
       e.preventDefault();
-      e.returnValue = "";
-      return "";
+      e.returnValue = '';
+      return '';
     };
-    window.addEventListener("beforeunload", unloadCallback);
-    return () => window.removeEventListener("beforeunload", unloadCallback);
+    window.addEventListener('beforeunload', unloadCallback);
+    return () => window.removeEventListener('beforeunload', unloadCallback);
   }, []);
 
   if (!books.length == 0) {
     return (
       <div>
-        <h1 className="p-3 m-2">Shopping Cart</h1>
+        <h1 className='p-3 m-2'>Shopping Cart</h1>
         <div>Items count: {books.length}</div>
         {books.map((book, key) => {
           return (
-            <div className="order card m-2" key={key}>
-              <div className="card-body d-inline-flex">
+            <div className='order card m-2' key={key}>
+              <div className='card-body d-inline-flex'>
                 {/*.......... Card image .........*/}
                 <img
-                  className="card-image d-inline-flex p-2"
+                  className='card-image d-inline-flex p-2'
                   src={book.volumeInfo?.imageLinks?.thumbnail}
-                  style={{ height: "150px", width: "auto" }}
+                  style={{ height: '150px', width: 'auto' }}
                 ></img>
-                <div className="card-content d-inline">
+                <div className='card-content d-inline'>
                   {/*.......... Card title .........*/}
-                  <h2 className="card-title">
+                  <h2 className='card-title'>
                     {book.volumeInfo?.title} - {book.volumeInfo?.authors[0]}
                   </h2>
                   {/*.......... Card info .........*/}
-                  <div className="card-info p-2">
+                  <div className='card-info p-2'>
                     {book.searchInfo?.textSnippet}
                   </div>
                   {/*.......... Card price .........*/}
-                  <div className="card-price p-2">
-                    {book.saleInfo?.listPrice?.amount}{" "}
+                  <div className='card-price p-2'>
+                    {book.saleInfo?.listPrice?.amount}{' '}
                     {book.saleInfo?.listPrice?.currencyCode}
                   </div>
                 </div>
                 {/*.......... Delete button .........*/}
                 <button
-                  onClick={(e) => click(e, key)}
-                  className="btn btn-light btn-delete"
+                  onClick={e => click(e, key)}
+                  className='btn btn-light btn-delete'
                   name={book.id}
                 >
                   x
@@ -59,9 +60,9 @@ const ShoppingCart = ({ books, click }) => {
           );
         })}
         <Link
-          to={"/checkout"}
+          to={'/checkout'}
           // state={{ data: books }}
-          className="btn btn-primary m-2"
+          className='btn btn-primary m-2'
         >
           CHECKOUT
         </Link>
@@ -70,10 +71,10 @@ const ShoppingCart = ({ books, click }) => {
   } else {
     return (
       <div>
-        <h1 className="p-3 m-2">Shopping Cart</h1>
-        <div className="empty-cart text-muted">
-          <div className="p-3 empty-cart text">Cart is empty</div>
-          <span className="material-symbols-outlined empty-cart icon">
+        <h1 className='p-3 m-2'>Shopping Cart</h1>
+        <div className='empty-cart text-muted'>
+          <div className='p-3 empty-cart text'>Cart is empty</div>
+          <span className='material-symbols-outlined empty-cart icon'>
             production_quantity_limits
           </span>
         </div>
